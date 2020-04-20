@@ -16,12 +16,15 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatListModule } from '@angular/material/list';
 import { ClipboardModule } from '@angular/cdk/clipboard';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 
 import { CreateRoomComponent } from './create-room/create-room.component';
 import { LobbyComponent } from './lobby/lobby.component';
 import { from } from 'rxjs';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 
 
@@ -44,7 +47,10 @@ import { from } from 'rxjs';
     MatButtonModule,
     MatSelectModule,
     MatAutocompleteModule,
-    ClipboardModule
+    MatListModule,
+    ClipboardModule,
+    MatProgressSpinnerModule,
+    FontAwesomeModule
   ],
 
   providers: [

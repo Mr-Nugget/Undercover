@@ -2,13 +2,21 @@
     <div class="box-title">
         <h1>Lobby</h1>
     </div>
-    <div>
-        <h3>Players</h3>
-        <div>
-            <ul>
-                <li>Test</li>
-            </ul>
-        </div>
+    <div class="playerList">
+        <mat-list>
+            <div mat-subheader>Players :</div>
+            <mat-list-item>
+                <span class="material-icons">
+                    star_outline
+                </span>
+                <div mat-line>{{ adminName }}</div>
+            </mat-list-item>
+        </mat-list>
+    </div>
+    <div *ngIf="currentPlayers != playersNum" class="infos">
+        <span>Waiting for people to join...</span>
+        <mat-progress-spinner diameter="25" color="accent" mode="indeterminate" value="100">
+        </mat-progress-spinner>
     </div>
     <div class="copyLink">
         <mat-form-field>
@@ -16,5 +24,8 @@
             <input matInput [value]="linkUrl">
         </mat-form-field>
         <button mat-raised-button color="accent" [cdkCopyToClipboard]="linkUrl">Copy invitation</button>
+    </div>
+    <div class="play">
+        <button mat-raised-button color="primary" [disabled]="currentPlayers != playersNum">Play !</button>
     </div>
 </div>

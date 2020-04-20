@@ -24,9 +24,15 @@ export class CreateRoomComponent implements OnInit {
   submitForm() {
     var players = parseInt(this.createGameForm.value['players'], 10);
     var username = this.createGameForm.value['username'];
-    var gameObject = this.gameService.createGame(players, username);
-    console.log(gameObject);
-    // Passing object to lobby component
-    this.router.navigate(['/lobby'], {queryParams : gameObject});
+
+    // Waiting for the promise to pass object
+    this.gameService.createGame(players, username)
+      .then((result) => {
+        // Passing object to lobby component
+        this.router.navigate(['/lobby'], {queryParams : result});
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 }

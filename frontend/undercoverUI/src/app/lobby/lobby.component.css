@@ -1,8 +1,23 @@
-.copyLink {
+#main {
+    margin-top: 50px;
+}
+
+.copyLink,
+.play {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+.play {
+    margin-top: 20px;
+}
+
+.playerList {
+    align-self: center;
+    width: 30%;
+    margin-bottom: 50px;
 }
 
 mat-form-field {
@@ -11,4 +26,26 @@ mat-form-field {
 
 button {
     width: 150px;
+}
+
+mat-form-field {
+    border-bottom: red;
+}
+
+mat-progress-spinner {
+    padding-bottom: 12px;
+}
+
+.infos {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    opacity: 0.8;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.infos span {
+    margin-bottom: 10px;
 }

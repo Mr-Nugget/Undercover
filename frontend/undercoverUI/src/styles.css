@@ -11,6 +11,8 @@ body {
 }
 
 #main {
+    display: flex;
+    flex-direction: column;
     border: solid 1px #c3c3c3;
     width: 50%;
     padding-bottom: 50px;
@@ -21,7 +23,9 @@ h1 {
     text-align: center;
 }
 
-mat-form-field input {
+mat-form-field input,
+mat-select,
+mat-option {
     height: 30px;
 }
 
