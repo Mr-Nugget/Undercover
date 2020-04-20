@@ -23,3 +23,14 @@ exports.createGame = (req, res, next) => {
         }
     });
 };
+
+exports.updateStatusGame = (req, res, next) => {
+    Game.updateOne({ _id: req.params.id }, {
+            status: req.body['status']
+        })
+        .then(() => {
+            res.status(200).json({ message: "Update success !" });
+            console.log('Update success !');
+        })
+        .catch((error) => res.status(400).json({ error: "Error : " + error }));
+};
