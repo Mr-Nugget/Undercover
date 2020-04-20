@@ -1,0 +1,7 @@
+@import '~@angular/material/theming';
+@include mat-core();
+$undercover-primary: mat-palette($mat-grey);
+$undercover-accent: mat-palette($mat-green);
+$undercover-warn: mat-palette($mat-red);
+$undercover-theme: mat-light-theme($undercover-primary, $undercover-accent, $undercover-warn);
+@include angular-material-theme($undercover-theme);

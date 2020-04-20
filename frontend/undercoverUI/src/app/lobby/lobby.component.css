@@ -1,0 +1,14 @@
+.copyLink {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+mat-form-field {
+    width: 50%;
+}
+
+button {
+    width: 150px;
+}
