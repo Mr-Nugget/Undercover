@@ -32,5 +32,13 @@ exports.updateStatusGame = (req, res, next) => {
             res.status(200).json({ message: "Update success !" });
             console.log('Update success !');
         })
-        .catch((error) => res.status(400).json({ error: "Error : " + error }));
+        .catch((error) => res.status(400).json({ error: error }));
 };
+
+exports.getById = (req, res, next) => {
+    Game.findOne({ _id: req.params.id })
+        .then(game => {
+            res.status(200).json(game);
+        })
+        .catch((error) => res.status(404).json({ error }));
+}

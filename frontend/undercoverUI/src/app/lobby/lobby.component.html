@@ -14,7 +14,7 @@
         </mat-list>
     </div>
     <div *ngIf="currentPlayers != playersNum" class="infos">
-        <span>Waiting for people to join...</span>
+        <span>Waiting for people to join... ({{currentPlayers }}/{{ playersNum }})</span>
         <mat-progress-spinner diameter="25" color="accent" mode="indeterminate" value="100">
         </mat-progress-spinner>
     </div>

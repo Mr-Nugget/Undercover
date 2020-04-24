@@ -7,4 +7,6 @@ router.post('/create', GameController.createGame);
 
 router.put('/updateStatus/:id', GameController.updateStatusGame);
 
+router.get('/getById/:id', GameController.getById);
+
 module.exports = router;

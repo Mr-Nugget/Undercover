@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 
 @Injectable()
@@ -24,5 +25,9 @@ export class GameService{
                 console.log("Something went wrong...");
             }
         );
+    }
+
+    getById(id: string): Observable<Object>{
+        return this.httpClient.get('http://localhost:3000/game/getById/' + id);
     }
 }
