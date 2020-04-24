@@ -32,3 +32,19 @@ mat-option {
 mat-form-field mat-label {
     font-size: 16px;
 }
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+}
+
+mat-form-field {
+    width: 50%;
+    margin-bottom: 20px;
+}
+
+.submit {
+    width: 100px;
+}

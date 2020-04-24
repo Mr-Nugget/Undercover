@@ -1,4 +1,5 @@
 var socket = require('socket.io');
+var socketControllers = require('./controllers/socketControllers');
 
 module.exports.listen = function(server) {
     var io = socket.listen(server);
@@ -13,7 +14,7 @@ module.exports.listen = function(server) {
             const name = data['name'];
             console.log(name + ' join the channel : ' + roomId);
 
-            io.sockets.in(roomId).emit('new-user', { name: name });
+            socketControllers.joinRoom(roomId, name, io);
         });
     });
 }

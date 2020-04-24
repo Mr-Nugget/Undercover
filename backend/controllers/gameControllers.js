@@ -4,7 +4,7 @@ exports.createGame = (req, res, next) => {
     const newGame = new Game({
         playersNum: req.body['players'],
         admin: req.body['username'],
-        players: [req.body['username']]
+        players: []
     });
 
     newGame.save(function(err, game) {
