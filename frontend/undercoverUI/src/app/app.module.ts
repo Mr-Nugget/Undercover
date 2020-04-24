@@ -18,8 +18,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatListModule } from '@angular/material/list';
 import { ClipboardModule } from '@angular/cdk/clipboard';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
+import { CookieService } from 'ngx-cookie-service';
 
 import { CreateRoomComponent } from './create-room/create-room.component';
 import { LobbyComponent } from './lobby/lobby.component';
@@ -54,7 +55,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
   ],
 
   providers: [
-    GameService
+    GameService,
+    CookieService
   ],
   bootstrap: [AppComponent]
 })

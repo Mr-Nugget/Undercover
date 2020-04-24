@@ -11,6 +11,9 @@
                 </span>
                 <div mat-line>{{ adminName }}</div>
             </mat-list-item>
+            <mat-list-item *ngFor='let player of playerNames'>
+                <div mat-line>{{ player }}</div>
+            </mat-list-item>
         </mat-list>
     </div>
     <div *ngIf="currentPlayers != playersNum" class="infos">
