@@ -29,7 +29,18 @@ exports.updateStatusGame = (req, res, next) => {
             status: req.body['status']
         })
         .then(() => {
-            res.status(200).json({ message: "Update success !" });
+            res.status(200).json({ message: "Update status successfull !" });
+            console.log('Update success !');
+        })
+        .catch((error) => res.status(400).json({ error: error }));
+};
+
+exports.updatePlayers = (req, res, next) => {
+    Game.updateOne({ _id: req.params.id }, {
+            players: req.body['players']
+        })
+        .then(() => {
+            res.status(200).json({ message: "Update players successfull !" });
             console.log('Update success !');
         })
         .catch((error) => res.status(400).json({ error: error }));
