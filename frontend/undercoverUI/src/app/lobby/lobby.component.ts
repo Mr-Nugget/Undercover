@@ -22,6 +22,9 @@ export class LobbyComponent implements OnInit, OnDestroy {
   playerNames: string[] = [];
   isAdmin: boolean = false;
   setYourNameForm: FormGroup;
+  haveError: boolean = false;
+  messageError: string;
+  isReady: boolean = false;
 
   constructor(private route: ActivatedRoute,
               private gameService : GameService,
@@ -47,6 +50,13 @@ export class LobbyComponent implements OnInit, OnDestroy {
         name : ['']
       });
     }
+    this.socketService.listen('error').subscribe(
+      (data) => {
+        this.haveError = true;
+        this.messageError = data['message'];
+        this.isReady = true;
+      }
+    )
   }
 
   ngOnDestroy() {
@@ -68,6 +78,7 @@ export class LobbyComponent implements OnInit, OnDestroy {
         this.adminName = data['admin'];
         this.playerNames = data['players'];
         this.playersNum = data['playersNum'];
+        this.isReady = true;
       }
     );
   }

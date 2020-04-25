@@ -14,7 +14,7 @@ module.exports.listen = function(server) {
             const name = data['name'];
             console.log(name + ' join the channel : ' + roomId);
 
-            socketControllers.joinRoom(roomId, name, io);
+            socketControllers.joinRoom(roomId, name, io, socket.id);
         });
     });
 }

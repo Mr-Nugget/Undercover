@@ -1,4 +1,4 @@
-<div *ngIf="isAdmin" class="container" id="main">
+<div *ngIf="isAdmin && !haveError && isReady" class="container" id="main">
     <div class="box-title">
         <h1>Lobby</h1>
     </div>
@@ -33,7 +33,7 @@
     </div>
 </div>
 
-<div *ngIf="!isAdmin" id="main" class="container">
+<div *ngIf="!isAdmin && !haveError" id="main" class="container">
     <div class="title">
         <h1>Join a game</h1>
         <form [formGroup]="setYourNameForm" (ngSubmit)="submitForm()">
@@ -44,4 +44,15 @@
             <button type="submit" class="submit" mat-raised-button color="accent">Join !</button>
         </form>
     </div>
+</div>
+
+<div *ngIf="haveError && isReady" class="container" id="main">
+    <h1>Oops... Something went wrong</h1>
+    <p>{{ messageError }}</p>
+</div>
+
+
+<div class="container" id="spinner" *ngIf="!isReady && isAdmin">
+    <mat-progress-spinner diameter="100" color="accent" mode="indeterminate" value="100">
+    </mat-progress-spinner>
 </div>
