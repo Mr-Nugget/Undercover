@@ -81,6 +81,13 @@ export class LobbyComponent implements OnInit, OnDestroy {
         this.isReady = true;
       }
     );
+
+    this.socketService.listen('user-leave').subscribe(
+      (data) => {
+        this.currentPlayers = data['players'].length;
+        this.playerNames = data['players'];
+      }
+    );
   }
 
 }

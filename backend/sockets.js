@@ -5,16 +5,24 @@ module.exports.listen = function(server) {
     var io = socket.listen(server);
 
     io.on('connection', (socket) => {
+        var roomId = null;
+        var name = null;
+
         socket.on('room', (room) => {
+            roomId = room;
             socket.join(room);
         });
 
         socket.on('new-user', (data) => {
-            const roomId = data['roomId'];
-            const name = data['name'];
-            console.log(name + ' join the channel : ' + roomId);
+            name = data['name'];
 
             socketControllers.joinRoom(roomId, name, io, socket.id);
+        });
+
+        socket.on('disconnect', () => {
+            socket.leave(roomId);
+
+            socketControllers.leaveRoom(roomId, name, io);
         });
     });
 }
