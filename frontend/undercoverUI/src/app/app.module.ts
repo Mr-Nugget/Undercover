@@ -26,6 +26,7 @@ import { CreateRoomComponent } from './create-room/create-room.component';
 import { LobbyComponent } from './lobby/lobby.component';
 import { from } from 'rxjs';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { GameComponent } from './game/game.component';
 
 
 
@@ -33,7 +34,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
   declarations: [
     AppComponent,
     CreateRoomComponent,
-    LobbyComponent
+    LobbyComponent,
+    GameComponent
   ],
   
   imports: [

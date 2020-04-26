@@ -28,8 +28,8 @@
         </mat-form-field>
         <button mat-raised-button color="accent" [cdkCopyToClipboard]="linkUrl">Copy invitation</button>
     </div>
-    <div class="play">
-        <button mat-raised-button color="primary" [disabled]="currentPlayers != playersNum">Play !</button>
+    <div *ngIf="isAdmin" class="play">
+        <button mat-raised-button color="primary" [disabled]="currentPlayers != playersNum" (click)="launchTheGame()">Play !</button>
     </div>
 </div>
 

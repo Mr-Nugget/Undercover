@@ -66,4 +66,16 @@ exports.leaveRoom = (gameId, playerName, io) => {
         .catch((error) => {
             console.error(error);
         });
-}
+};
+
+exports.launchGame = (gameId, io) => {
+    console.log('Launching game on room: ' + gameId);
+    io.sockets.in(gameId).emit('play');
+};
+
+/**
+ * Broadcast a message from the others players of the room
+ */
+exports.broadcastMessage = (message, gameId, username, socket) => {
+    socket.to(gameId).emit('message', { username: username, message: message });
+};

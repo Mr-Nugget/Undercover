@@ -27,10 +27,10 @@ export class LobbyComponent implements OnInit, OnDestroy {
   isReady: boolean = false;
 
   constructor(private route: ActivatedRoute,
-              private gameService : GameService,
               private socketService: WebSocketService,
               private cookieService: CookieService,
-              private formBuilder: FormBuilder,) { }
+              private formBuilder: FormBuilder,
+              private router: Router,) { }
 
   ngOnInit() {
     // Get the room id from URL
@@ -50,24 +50,31 @@ export class LobbyComponent implements OnInit, OnDestroy {
         name : ['']
       });
     }
+    // Subscribe to error event
     this.socketService.listen('error').subscribe(
       (data) => {
         this.haveError = true;
         this.messageError = data['message'];
         this.isReady = true;
       }
+    );
+    // Subscribe for launching the game when the room is full
+    this.socketService.listen('play').subscribe(
+      () =>{
+        this.router.navigate(['/game/' + this.gameId]);
+      }
     )
   }
 
   ngOnDestroy() {
   }
-
+  // Join the room with username
   submitForm(){
     this.userName = this.setYourNameForm.value['name'];
     this.isAdmin = true;
     this.joinSocketRoom(this.gameId, this.userName);
   }
-
+  // Emit to the others and subscribes to users comming and leaving events
   joinSocketRoom(gameId: string, username: string){
     this.socketService.emit('room', gameId);
     this.socketService.emit('new-user', { roomId: gameId, name: username });
@@ -88,6 +95,10 @@ export class LobbyComponent implements OnInit, OnDestroy {
         this.playerNames = data['players'];
       }
     );
+  }
+  // Launch the game by emitting to the others
+  launchTheGame(){
+    this.socketService.emit('play', {});
   }
 
 }

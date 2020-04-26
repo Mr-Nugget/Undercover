@@ -19,6 +19,14 @@ module.exports.listen = function(server) {
             socketControllers.joinRoom(roomId, name, io, socket.id);
         });
 
+        socket.on('play', () => {
+            socketControllers.launchGame(roomId, io);
+        })
+
+        socket.on('message', (data) => {
+            socketControllers.broadcastMessage(data['message'], roomId, name, socket);
+        });
+
         socket.on('disconnect', () => {
             socket.leave(roomId);
 

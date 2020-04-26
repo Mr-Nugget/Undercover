@@ -1,0 +1,27 @@
+<div id="gameBoard">
+    <div class="content">
+
+    </div>
+    <div class="chat">
+        <div>
+            <h3>Chat</h3>
+        </div>
+        <div class="messages">
+            <ul id="messagesList" class="list-group list-group-flush">
+
+            </ul>
+        </div>
+        <div class="write">
+            <form [formGroup]="sendMessageForm" (ngSubmit)="submitForm()">
+                <mat-form-field>
+                    <input type="text" matInput formControlName="message" placeholder="Type your message..." autofill='false'>
+                </mat-form-field>
+                <button type="submit" class="submit" mat-raised-button color="accent">
+                    <span class="material-icons">
+                        send
+                    </span>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
