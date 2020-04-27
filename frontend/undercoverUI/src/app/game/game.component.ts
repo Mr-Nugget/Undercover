@@ -18,8 +18,9 @@ export class GameComponent implements OnInit {
   username: string;
   position: number;
   lap: number = 1;
-  counter: number = 1;
+  counter: number = 0;
   isMyTurn: boolean = false;
+  currentPlayer: string;
 
   constructor(private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -40,18 +41,26 @@ export class GameComponent implements OnInit {
 
     this.socketService.listen('init-game').subscribe(
       (data) => {
-        console.log(data);
         this.listPlayers = data['players'];
         this.position = data['position'];
         this.isMyTurn = data['isMyTurn'];
         this.username = this.listPlayers[this.position];
+        this.currentPlayer = this.listPlayers[0];
       }
     );
 
-    this.socketService.listen('your-turn').subscribe(
+    this.socketService.listen('next-player').subscribe(
       (data) => {
-        this.isMyTurn = data['isMyTurn'];
-        console.log(this.isMyTurn);
+        console.log(data);
+        var lastPlayer = data['emitterName'];
+        if(lastPlayer != undefined){
+          // Update last player word
+          $("." + lastPlayer + " .wordProposal").append("<mat-list-item>" + data['word'] + "</mat-list-item><br>");
+          this.currentPlayer = this.listPlayers[data['nextPosition']];
+          this.isMyTurn = data['isYourTurn'];
+        }
+
+        this.counter = data['counter'];
       }
     );
 
@@ -74,6 +83,7 @@ export class GameComponent implements OnInit {
     this.socketService.emit('next-player', { gameId: this.gameId, word: myWord, counter: this.counter, username: this.username });
     $(".myPlayer .wordProposal").append("<mat-list-item>" + myWord + "</mat-list-item><br>");
     $("#wordInput").val('');
+    this.isMyTurn = false;
   }
 
 }

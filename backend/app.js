@@ -3,6 +3,8 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
 const gameRoutes = require('./routes/gameRoutes');
+const wordRoutes = require('./routes/wordRoutes');
+
 
 
 const app = express();
@@ -25,5 +27,7 @@ mongoose.connect('mongodb+srv://mrnugget:nimvav94@test-c7tyh.mongodb.net/test?re
 app.use(bodyParser.json());
 
 app.use('/game', gameRoutes);
+
+app.use('/word', wordRoutes);
 
 module.exports = app;

@@ -21,7 +21,11 @@ module.exports.listen = function(server) {
 
         socket.on('play', () => {
             socketControllers.launchGame(roomId, name, io, socket.id);
-        })
+        });
+
+        socket.on('next-player', (data) => {
+            socketControllers.nextPlayer(roomId, data['word'], data['counter'], data['username'], io);
+        });
 
         socket.on('message', (data) => {
             socketControllers.broadcastMessage(data['message'], roomId, name, socket);
