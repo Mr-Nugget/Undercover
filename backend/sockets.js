@@ -20,7 +20,7 @@ module.exports.listen = function(server) {
         });
 
         socket.on('play', () => {
-            socketControllers.launchGame(roomId, io);
+            socketControllers.launchGame(roomId, name, io, socket.id);
         })
 
         socket.on('message', (data) => {

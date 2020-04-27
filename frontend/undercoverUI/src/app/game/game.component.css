@@ -42,6 +42,10 @@
     font-weight: bold;
 }
 
+.myPlayer {
+    background-color: green;
+}
+
 .wordSender {
     width: 30%;
     align-self: center;
@@ -70,6 +74,13 @@
 .messages {
     height: 70%;
     overflow-y: auto;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.myMessage {
+    color: #C9C9C9;
+    text-align: right;
 }
 
 .write {

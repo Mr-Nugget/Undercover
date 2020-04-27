@@ -67,10 +67,33 @@ exports.leaveRoom = (gameId, playerName, io) => {
             console.error(error);
         });
 };
-
-exports.launchGame = (gameId, io) => {
+/**
+ * Launch the game : send 'play' to redirect and then 'init-game' to send game info to client
+ */
+exports.launchGame = (gameId, name, io, socketId) => {
     console.log('Launching game on room: ' + gameId);
+
+    // Emit to redirect
     io.sockets.in(gameId).emit('play');
+
+    Game.findById({ _id: gameId })
+        .then((game) => {
+            var clients = io.sockets.adapter.rooms[gameId].sockets;
+            var position = 0;
+            for (var clientId in clients) {
+                // This is the socket of each client in the room.
+                var clientSocket = io.sockets.connected[clientId];
+                if (position == 0) {
+                    clientSocket.emit('init-game', { players: game['players'], isMyTurn: true, position: position });
+                } else {
+                    clientSocket.emit('init-game', { players: game['players'], isMyTurn: false, position: position });
+                }
+                position++;
+            }
+        })
+        .catch((error) => {
+            console.error(error);
+        });
 };
 
 /**

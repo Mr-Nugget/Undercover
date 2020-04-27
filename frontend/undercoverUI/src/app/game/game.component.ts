@@ -14,10 +14,12 @@ export class GameComponent implements OnInit {
   sendMessageForm: FormGroup;
   gameId: string;
   sendWordForm: FormGroup;
-  listPlayer: string[];
+  listPlayers: string[];
   username: string;
   position: number;
   lap: number = 1;
+  counter: number = 1;
+  isMyTurn: boolean = false;
 
   constructor(private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -38,15 +40,24 @@ export class GameComponent implements OnInit {
 
     this.socketService.listen('init-game').subscribe(
       (data) => {
-        this.listPlayer = data['players'];
-        this.username = data['username'];
+        console.log(data);
+        this.listPlayers = data['players'];
         this.position = data['position'];
+        this.isMyTurn = data['isMyTurn'];
+        this.username = this.listPlayers[this.position];
+      }
+    );
+
+    this.socketService.listen('your-turn').subscribe(
+      (data) => {
+        this.isMyTurn = data['isMyTurn'];
+        console.log(this.isMyTurn);
       }
     );
 
     this.socketService.listen('message').subscribe(
       (data) => {
-        $("#messagesList").append("<mat-list-item>" + data['username'] + " : " + data['message'] + "</mat-list-item>");
+        $("#messagesList").append("<mat-list-item>" + data['username'] + " : " + data['message'] + "</mat-list-item><br>");
       }
     );
   }
@@ -54,11 +65,15 @@ export class GameComponent implements OnInit {
   submitChatForm() {
     var message = this.sendMessageForm.value['message'];
     this.socketService.emit('message', { gameId: this.gameId, message: message });
-    $("#messagesList").append("<li class='list-group-item'> Me : " + message + "</li>");
+    $("#messagesList").append("<mat-list-item class='myMessage'>" + this.username + ": " + message + "</mat-list-item><br>");
+    $("#messageInput").val('');
   }
   // Send your word during the game
-  submitWordForm(){
-
+  submitWordForm() {
+    var myWord = this.sendWordForm.value['word'];
+    this.socketService.emit('next-player', { gameId: this.gameId, word: myWord, counter: this.counter, username: this.username });
+    $(".myPlayer .wordProposal").append("<mat-list-item>" + myWord + "</mat-list-item><br>");
+    $("#wordInput").val('');
   }
 
 }

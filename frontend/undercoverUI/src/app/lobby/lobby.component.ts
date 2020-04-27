@@ -25,6 +25,7 @@ export class LobbyComponent implements OnInit, OnDestroy {
   haveError: boolean = false;
   messageError: string;
   isReady: boolean = false;
+  haveUsername: boolean = false;
 
   constructor(private route: ActivatedRoute,
               private socketService: WebSocketService,
@@ -43,6 +44,7 @@ export class LobbyComponent implements OnInit, OnDestroy {
         
     if(this.isAdmin){
       this.adminName = this.cookieService.get('isAdmin');
+      this.haveUsername = true;
       // Join the socket room
       this.joinSocketRoom(this.gameId, this.adminName);
     }else{
@@ -71,7 +73,7 @@ export class LobbyComponent implements OnInit, OnDestroy {
   // Join the room with username
   submitForm(){
     this.userName = this.setYourNameForm.value['name'];
-    this.isAdmin = true;
+    this.haveUsername = true;
     this.joinSocketRoom(this.gameId, this.userName);
   }
   // Emit to the others and subscribes to users comming and leaving events

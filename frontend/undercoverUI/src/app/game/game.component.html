@@ -4,14 +4,14 @@
             <h2>Game</h2>
         </div>
         <div class="players">
-            <div *ngFor="let player in listPlayers" class="player">
+            <div *ngFor="let player of listPlayers" class="player {{ player }}" [ngClass]="[ username == player ? 'myPlayer' : '' ]">
                 <div class="avatar">
                     <span class="material-icons">
                         face
                     </span>
                 </div>
                 <div>
-                    <h3>player</h3>
+                    <h3>{{ player }}</h3>
                 </div>
                 <div>
                     <h4>Words :</h4>
@@ -23,9 +23,9 @@
         <div class="wordSender">
             <form [formGroup]="sendWordForm" (ngSubmit)="submitWordForm()" autocomplete="off">
                 <mat-form-field>
-                    <input type="text" matInput formControlName="word" placeholder="Send your word" autocomplete="off">
+                    <input id="wordInput" type="text" matInput formControlName="word" placeholder="Send your word" autocomplete="off">
                 </mat-form-field>
-                <button type="submit" class="submit" mat-raised-button color="accent">
+                <button type="submit" class="submit" mat-raised-button color="accent" [disabled]="!isMyTurn">
                     <span class="material-icons">
                         send
                     </span>
@@ -45,7 +45,7 @@
         <div class="write">
             <form [formGroup]="sendMessageForm" (ngSubmit)="submitChatForm()" autocomplete="off">
                 <mat-form-field>
-                    <input type="text" matInput formControlName="message" placeholder="Type your message..." autofill='false' autocomplete="off">
+                    <input id="messageInput" type="text" matInput formControlName="message" placeholder="Type your message..." autofill='false' autocomplete="off">
                 </mat-form-field>
                 <button type="submit" class="submit" mat-raised-button color="accent">
                     <span class="material-icons">
