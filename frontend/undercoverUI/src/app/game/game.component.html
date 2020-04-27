@@ -1,20 +1,51 @@
-<div id="gameBoard">
-    <div class="content">
-
+<div id="mainContent">
+    <div class="gameContent">
+        <div class="title">
+            <h2>Game</h2>
+        </div>
+        <div class="players">
+            <div *ngFor="let player in listPlayers" class="player">
+                <div class="avatar">
+                    <span class="material-icons">
+                        face
+                    </span>
+                </div>
+                <div>
+                    <h3>player</h3>
+                </div>
+                <div>
+                    <h4>Words :</h4>
+                    <mat-list class="wordProposal">
+                    </mat-list>
+                </div>
+            </div>
+        </div>
+        <div class="wordSender">
+            <form [formGroup]="sendWordForm" (ngSubmit)="submitWordForm()" autocomplete="off">
+                <mat-form-field>
+                    <input type="text" matInput formControlName="word" placeholder="Send your word" autocomplete="off">
+                </mat-form-field>
+                <button type="submit" class="submit" mat-raised-button color="accent">
+                    <span class="material-icons">
+                        send
+                    </span>
+                </button>
+            </form>
+        </div>
     </div>
     <div class="chat">
         <div>
             <h3>Chat</h3>
         </div>
         <div class="messages">
-            <ul id="messagesList" class="list-group list-group-flush">
-
-            </ul>
+            <mat-list id="messagesList">
+                <!-- Messages will be insert here -->
+            </mat-list>
         </div>
         <div class="write">
-            <form [formGroup]="sendMessageForm" (ngSubmit)="submitForm()">
+            <form [formGroup]="sendMessageForm" (ngSubmit)="submitChatForm()" autocomplete="off">
                 <mat-form-field>
-                    <input type="text" matInput formControlName="message" placeholder="Type your message..." autofill='false'>
+                    <input type="text" matInput formControlName="message" placeholder="Type your message..." autofill='false' autocomplete="off">
                 </mat-form-field>
                 <button type="submit" class="submit" mat-raised-button color="accent">
                     <span class="material-icons">

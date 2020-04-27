@@ -1,12 +1,59 @@
-#gameBoard {
+#mainContent {
     height: 79vh;
     display: flex;
 }
 
-.content {
+
+/*------------- GAME BOARD ------------*/
+
+.gameContent {
     flex: 2;
     background-color: #C3C3C3;
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
 }
+
+.title {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.title h2 {
+    font-size: 40px;
+}
+
+.avatar .material-icons {
+    font-size: 70px;
+}
+
+.players {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.players h4 {
+    margin-bottom: 0;
+}
+
+.player h3 {
+    font-weight: bold;
+}
+
+.wordSender {
+    width: 30%;
+    align-self: center;
+}
+
+.write .material-icons,
+.wordSender .material-icons {
+    color: white;
+}
+
+
+/* ------------ CHAT CSS ------------ */
 
 .chat {
     flex: 1;

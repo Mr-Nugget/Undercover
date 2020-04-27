@@ -12,32 +12,53 @@ import * as $ from 'jquery';
 })
 export class GameComponent implements OnInit {
   sendMessageForm: FormGroup;
-  gameId: any;
+  gameId: string;
+  sendWordForm: FormGroup;
+  listPlayer: string[];
+  username: string;
+  position: number;
+  lap: number = 1;
 
   constructor(private formBuilder: FormBuilder,
-              private route: ActivatedRoute,
-              private socketService: WebSocketService,
-              private cookieService: CookieService ) { }
+    private route: ActivatedRoute,
+    private socketService: WebSocketService,
+    private cookieService: CookieService) { }
 
   ngOnInit(): void {
     // Get the room id from URL
     this.gameId = this.route.snapshot.params['id'];
-    // Setting up the form
+    // Setting up the chat form
     this.sendMessageForm = this.formBuilder.group({
       message: ['']
     });
+    // Setting up the chat form
+    this.sendWordForm = this.formBuilder.group({
+      word: ['']
+    });
+
+    this.socketService.listen('init-game').subscribe(
+      (data) => {
+        this.listPlayer = data['players'];
+        this.username = data['username'];
+        this.position = data['position'];
+      }
+    );
 
     this.socketService.listen('message').subscribe(
       (data) => {
-        $("#messagesList").append("<li class='list-group-item'>"+ data['username'] + " : " + data['message'] +"</li>");
+        $("#messagesList").append("<mat-list-item>" + data['username'] + " : " + data['message'] + "</mat-list-item>");
       }
-    )
+    );
   }
-
-  submitForm() {
+  // Send a message from the chat form
+  submitChatForm() {
     var message = this.sendMessageForm.value['message'];
     this.socketService.emit('message', { gameId: this.gameId, message: message });
-    $("#messagesList").append("<li class='list-group-item'> Me : " + message +"</li>");
+    $("#messagesList").append("<li class='list-group-item'> Me : " + message + "</li>");
+  }
+  // Send your word during the game
+  submitWordForm(){
+
   }
 
 }
