@@ -2,13 +2,6 @@
     margin-top: 50px;
 }
 
-#spinner {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 500px;
-}
-
 .copyLink,
 .play {
     display: flex;

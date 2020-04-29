@@ -3,6 +3,10 @@
     display: flex;
 }
 
+#main {
+    margin-top: 50px;
+}
+
 
 /*------------- GAME BOARD ------------*/
 
@@ -46,13 +50,18 @@
 }
 
 .wordSender {
-    width: 30%;
     align-self: center;
 }
 
 .write .material-icons,
 .wordSender .material-icons {
     color: white;
+}
+
+.yourWord {
+    text-align: center;
+    margin-top: 50px;
+    font-size: 25px;
 }
 
 
@@ -95,7 +104,6 @@ form {
     flex-direction: row;
     align-items: inherit;
     padding-top: inherit;
-    height: 100%;
 }
 
 mat-form-field {

@@ -22,6 +22,9 @@ export class GameComponent implements OnInit {
   isMyTurn: boolean = false;
   currentPlayer: string;
   myWord: string;
+  isReady: boolean = false;
+  haveError: boolean;
+  messageError: any;
 
   constructor(private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -40,6 +43,15 @@ export class GameComponent implements OnInit {
       word: ['']
     });
 
+    // Subscribe to error event
+    this.socketService.listen('error').subscribe(
+      (data) => {
+        this.haveError = true;
+        this.messageError = data['message'];
+        this.isReady = true;
+      }
+    );
+
     this.socketService.listen('init-game').subscribe(
       (data) => {
         this.listPlayers = data['players'];
@@ -48,6 +60,7 @@ export class GameComponent implements OnInit {
         this.username = this.listPlayers[this.position];
         this.currentPlayer = this.listPlayers[0];
         this.myWord = data['yourWord'];
+        this.isReady = true;
       }
     );
 
@@ -57,7 +70,7 @@ export class GameComponent implements OnInit {
         var lastPlayer = data['emitterName'];
         if(lastPlayer != undefined){
           // Update last player word
-          $("." + lastPlayer + " .wordProposal").append("<mat-list-item>" + data['word'] + "</mat-list-item><br>");
+          $("." + lastPlayer.replace(/\s/g, '-') + " .wordProposal").append("<mat-list-item>" + data['word'] + "</mat-list-item><br>");
           this.currentPlayer = this.listPlayers[data['nextPosition']];
           this.isMyTurn = data['isYourTurn'];
         }

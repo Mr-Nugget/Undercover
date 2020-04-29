@@ -27,6 +27,7 @@ import { LobbyComponent } from './lobby/lobby.component';
 import { from } from 'rxjs';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { GameComponent } from './game/game.component';
+import { ReplaceSpaceByDashPipe } from './customPipes/replace-space-by-dash.pipe';
 
 
 
@@ -35,7 +36,8 @@ import { GameComponent } from './game/game.component';
     AppComponent,
     CreateRoomComponent,
     LobbyComponent,
-    GameComponent
+    GameComponent,
+    ReplaceSpaceByDashPipe
   ],
   
   imports: [

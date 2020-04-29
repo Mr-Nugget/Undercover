@@ -1,10 +1,10 @@
-<div id="mainContent">
+<div *ngIf="isReady && !haveError" id="mainContent">
     <div class="gameContent">
         <div class="title">
             <h2>Game</h2>
         </div>
         <div class="players">
-            <div *ngFor="let player of listPlayers" class="player {{ player }}" [ngClass]="[ username == player ? 'myPlayer' : '' ]">
+            <div *ngFor="let player of listPlayers" class="player {{ player | replaceSpaceByDash }}" [ngClass]="[ username == player ? 'myPlayer' : '' ]">
                 <div class="avatar">
                     <span class="material-icons">
                         face
@@ -31,8 +31,10 @@
                     </span>
                 </button>
             </form>
-            <span *ngIf="isMyTurn">It's your turn to send a word !</span>
-            <span *ngIf="!isMyTurn">It's {{ currentPlayer }}'s turn...</span>
+            <div>
+                <span *ngIf="isMyTurn">It's your turn to send a word !</span>
+                <span *ngIf="!isMyTurn">It's {{ currentPlayer }}'s turn...</span>
+            </div>
         </div>
         <div class="yourWord">
             <span>Your word : {{ myWord }}</span>
@@ -60,4 +62,15 @@
             </form>
         </div>
     </div>
+</div>
+
+<div *ngIf="haveError && isReady" class="container" id="main">
+    <h1>Oops... Something went wrong</h1>
+    <p>{{ messageError }}</p>
+</div>
+
+
+<div class="container" id="spinner" *ngIf="!isReady">
+    <mat-progress-spinner diameter="100" color="accent" mode="indeterminate" value="100">
+    </mat-progress-spinner>
 </div>

@@ -48,3 +48,10 @@ mat-form-field {
 .submit {
     width: 100px;
 }
+
+#spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 500px;
+}

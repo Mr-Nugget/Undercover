@@ -12,6 +12,7 @@ import { CookieService } from 'ngx-cookie-service';
 export class CreateRoomComponent implements OnInit {
   selected = 'none';
   createGameForm: FormGroup;
+  isReady: boolean = true;
 
   constructor(private formBuilder: FormBuilder,
               private gameService: GameService,
@@ -26,6 +27,7 @@ export class CreateRoomComponent implements OnInit {
   }
 
   submitForm() {
+    this.isReady = false;
     var players = parseInt(this.createGameForm.value['players'], 10);
     var username = this.createGameForm.value['username'];
 
