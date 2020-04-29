@@ -1,16 +1,35 @@
 const Word = require('../models/Words');
 
+exports.countWords = (req, res, next) => {
+    Word.countDocuments()
+        .then((number) => {
+            console.log(number);
+            res.status(200).json({ number: number });
+        })
+        .catch((error) => {
+            console.log(error);
+            res.status(400).json({ error: "Error" });
+        });
+};
 
 exports.getRandomWords = () => {
-    Word.findOneRandom((err, result) => {
-        if (!err) {
-            return result;
-        } else {
-            console.log(err);
-            return null;
-        }
-    });
+    Word.countDocuments()
+        .then((number) => {
+            var random = Math.floor(Math.random() * number)
+            Word.findOne().skip(random)
+                .then((word) => {
+                    return word;
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        })
+        .catch((error) => {
+            console.log(error);
+        });
 };
+
+
 
 exports.getRandomWordsAPI = (req, res, next) => {
     Word.findOneRandom((err, result) => {

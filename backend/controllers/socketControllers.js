@@ -1,4 +1,6 @@
 const Game = require("../models/Game");
+const Word = require("../models/Words");
+const WordsTool = require("../tools/wordTools");
 
 /**
  * Find the game and control if it's still available
@@ -79,18 +81,25 @@ exports.launchGame = (gameId, name, io, socketId) => {
 
     Game.findById({ _id: gameId })
         .then((game) => {
-            var clients = io.sockets.adapter.rooms[gameId].sockets;
-            var position = 0;
-            for (var clientId in clients) {
-                // This is the socket of each client in the room.
-                var clientSocket = io.sockets.connected[clientId];
-                if (position == 0) {
-                    clientSocket.emit('init-game', { players: game['players'], isMyTurn: true, position: position });
+            Word.findOneRandom((err, result) => {
+                if (!err) {
+                    var clients = io.sockets.adapter.rooms[gameId].sockets;
+                    var position = 0;
+                    var words = WordsTool.selectRandomWord(game['playersNum'], result);
+                    for (var clientId in clients) {
+                        // This is the socket of each client in the room.
+                        var clientSocket = io.sockets.connected[clientId];
+                        if (position == 0) {
+                            clientSocket.emit('init-game', { players: game['players'], isMyTurn: true, position: position, yourWord: words[position] });
+                        } else {
+                            clientSocket.emit('init-game', { players: game['players'], isMyTurn: false, position: position, yourWord: words[position] });
+                        }
+                        position++;
+                    }
                 } else {
-                    clientSocket.emit('init-game', { players: game['players'], isMyTurn: false, position: position });
+                    console.log(error);
                 }
-                position++;
-            }
+            });
         })
         .catch((error) => {
             console.error(error);

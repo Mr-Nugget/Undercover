@@ -21,6 +21,7 @@ export class GameComponent implements OnInit {
   counter: number = 0;
   isMyTurn: boolean = false;
   currentPlayer: string;
+  myWord: string;
 
   constructor(private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -46,6 +47,7 @@ export class GameComponent implements OnInit {
         this.isMyTurn = data['isMyTurn'];
         this.username = this.listPlayers[this.position];
         this.currentPlayer = this.listPlayers[0];
+        this.myWord = data['yourWord'];
       }
     );
 
