@@ -20,7 +20,7 @@
                 </div>
             </div>
         </div>
-        <div class="wordSender">
+        <div *ngIf="!isVoteTime" class="wordSender">
             <form [formGroup]="sendWordForm" (ngSubmit)="submitWordForm()" autocomplete="off">
                 <mat-form-field>
                     <input id="wordInput" type="text" matInput formControlName="word" placeholder="Send your word" autocomplete="off">
@@ -35,6 +35,9 @@
                 <span *ngIf="isMyTurn">It's your turn to send a word !</span>
                 <span *ngIf="!isMyTurn">It's {{ currentPlayer }}'s turn...</span>
             </div>
+        </div>
+        <div *ngIf="isVoteTime" class="voteMessage">
+            <span>Vote for the undercover !</span>
         </div>
         <div class="yourWord">
             <span>Your word : {{ myWord }}</span>

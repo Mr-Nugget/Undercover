@@ -107,7 +107,7 @@ exports.launchGame = (gameId, name, io, socketId) => {
 };
 
 /**
- * Broadcast a message from the others players of the room
+ * Broadcast a message to the others players of the room
  */
 exports.broadcastMessage = (message, gameId, username, socket) => {
     socket.to(gameId).emit('message', { username: username, message: message });
@@ -123,24 +123,24 @@ exports.nextPlayer = (gameId, word, counter, emitterName, io) => {
     var positionOfEmitter = counter % playersNum;
     var positionOfNextPlayer = positionOfEmitter == 2 ? 0 : positionOfEmitter + 1;
 
-    // End of word sending, let's go to the vote !
-    if (counter == 3 * playersNum) {
 
-    } else {
-        for (var clientId in clients) {
-            // This is the socket of each client in the room.
-            var clientSocket = io.sockets.connected[clientId];
-            // If it's the emitter
-            if (position == positionOfEmitter) {
-                clientSocket.emit('next-player', { counter: counter + 1, nextPosition: positionOfNextPlayer });
-            }
-            // If it's the next player
-            else if (position == positionOfNextPlayer) {
-                clientSocket.emit('next-player', { emitterName: emitterName, word: word, isYourTurn: true, counter: counter + 1, nextPosition: positionOfNextPlayer });
-            } else {
-                clientSocket.emit('next-player', { emitterName: emitterName, word: word, isYourTurn: false, counter: counter + 1, nextPosition: positionOfNextPlayer });
-            }
-            position++;
+    for (var clientId in clients) {
+        // This is the socket of each client in the room.
+        var clientSocket = io.sockets.connected[clientId];
+        // If it's the emitter
+        if (position == positionOfEmitter) {
+            clientSocket.emit('next-player', { counter: counter + 1, nextPosition: positionOfNextPlayer });
+        }
+        // If it's the next player
+        else if (position == positionOfNextPlayer) {
+            clientSocket.emit('next-player', { emitterName: emitterName, word: word, isYourTurn: true, counter: counter + 1, nextPosition: positionOfNextPlayer });
+        } else {
+            clientSocket.emit('next-player', { emitterName: emitterName, word: word, isYourTurn: false, counter: counter + 1, nextPosition: positionOfNextPlayer });
+        }
+        position++;
+        // End of word sending, let's go to the vote !
+        if (counter == 3 * playersNum - 1) {
+            io.sockets.in(gameId).emit('vote');
         }
     }
 };

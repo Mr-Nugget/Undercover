@@ -45,12 +45,16 @@
     font-weight: bold;
 }
 
-.myPlayer {
-    background-color: green;
+.myPlayer .avatar {
+    color: green;
 }
 
 .wordSender {
     align-self: center;
+}
+
+.voteMessage {
+    text-align: center;
 }
 
 .write .material-icons,
