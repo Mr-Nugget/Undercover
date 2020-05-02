@@ -1,19 +1,27 @@
 <header>
+    <button id="phoneMenuButton" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Phone menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+    <mat-menu id="phoneMenu" #menu="matMenu">
+        <button mat-menu-item routerLink="/">
+            <span>Nouvelle partie</span>
+        </button>
+        <button mat-menu-item routerLink="/rules">
+          <span>Règles du jeu</span>
+        </button>
+    </mat-menu>
     <div id="title">
-        <h1>The Undercover</h1>
+        <a href="/">
+            <img src="../assets/favicon.png" alt="">
+            <h1>The Undercover</h1>
+        </a>
     </div>
     <div id="menu">
         <div class="btn-container">
-            <button mat-flat-button routerLink="/">New game</button>
+            <button mat-flat-button routerLink="/">Nouvelle partie</button>
         </div>
         <div class="btn-container">
-            <button mat-flat-button>Menu-item</button>
-        </div>
-        <div class="btn-container">
-            <button mat-flat-button routerLink="/rules">Rules</button>
-        </div>
-        <div class="btn-container">
-            <button mat-flat-button>Menu-item</button>
+            <button mat-flat-button routerLink="/rules">Règle du jeu</button>
         </div>
     </div>
 </header>

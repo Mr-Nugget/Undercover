@@ -4,7 +4,7 @@
     </div>
     <div class="playerList">
         <mat-list>
-            <div mat-subheader>Players :</div>
+            <div mat-subheader>Joueurs :</div>
             <mat-list-item>
                 <span class="material-icons">
                     star_outline
@@ -17,31 +17,34 @@
         </mat-list>
     </div>
     <div *ngIf="currentPlayers != playersNum" class="infos">
-        <span>Waiting for people to join... ({{currentPlayers }}/{{ playersNum }})</span>
+        <span>En attente de joueurs... ({{currentPlayers }}/{{ playersNum }})</span>
         <mat-progress-spinner diameter="25" color="accent" mode="indeterminate" value="100">
         </mat-progress-spinner>
     </div>
+    <div *ngIf="currentPlayers == playersNum" class="infos">
+        <span>La partie peut maintenant commencer.</span>
+    </div>
     <div class="copyLink">
         <mat-form-field>
-            <mat-label>Invitation link :</mat-label>
+            <mat-label>Lien :</mat-label>
             <input matInput [value]="linkUrl">
         </mat-form-field>
-        <button mat-raised-button color="accent" [cdkCopyToClipboard]="linkUrl">Copy invitation</button>
+        <button mat-raised-button color="accent" [cdkCopyToClipboard]="linkUrl">Copier l'invitation</button>
     </div>
     <div *ngIf="isAdmin" class="play">
-        <button mat-raised-button color="primary" [disabled]="currentPlayers != playersNum" (click)="launchTheGame()">Play !</button>
+        <button mat-raised-button color="primary" [disabled]="currentPlayers != playersNum" (click)="launchTheGame()">Jouer !</button>
     </div>
 </div>
 
 <div *ngIf="!haveUsername && !haveError" id="main" class="container">
     <div class="title">
-        <h1>Join a game</h1>
+        <h1>Rejoindre la partie</h1>
         <form [formGroup]="setYourNameForm" (ngSubmit)="submitForm()">
             <mat-form-field>
-                <mat-label>Name :</mat-label>
+                <mat-label>Pseudo :</mat-label>
                 <input matInput formControlName="name">
             </mat-form-field>
-            <button type="submit" class="submit" mat-raised-button color="accent">Join !</button>
+            <button type="submit" class="submit" mat-raised-button color="accent">Rejoindre !</button>
         </form>
     </div>
 </div>

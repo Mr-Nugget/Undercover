@@ -1,0 +1,14 @@
+#main {
+    margin-top: 50px;
+}
+
+p {
+    text-align: justify;
+    padding: 30px
+}
+
+@media screen and (max-width: 850px) {
+    p {
+        padding: 5px;
+    }
+}

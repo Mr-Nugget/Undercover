@@ -4,7 +4,7 @@
     "description": "Undercover server rooms with socket.io",
     "main": "app.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "start": "node server.js"
     },
     "author": "Titouan Raimbault",
     "license": "ISC",

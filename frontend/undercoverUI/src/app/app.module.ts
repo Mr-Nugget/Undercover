@@ -11,6 +11,7 @@ import { GameService } from './services/game.services';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon'
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -28,6 +29,7 @@ import { from } from 'rxjs';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { GameComponent } from './game/game.component';
 import { ReplaceSpaceByDashPipe } from './customPipes/replace-space-by-dash.pipe';
+import { RulesComponent } from './rules/rules.component';
 
 
 
@@ -37,7 +39,8 @@ import { ReplaceSpaceByDashPipe } from './customPipes/replace-space-by-dash.pipe
     CreateRoomComponent,
     LobbyComponent,
     GameComponent,
-    ReplaceSpaceByDashPipe
+    ReplaceSpaceByDashPipe,
+    RulesComponent
   ],
   
   imports: [
@@ -50,6 +53,7 @@ import { ReplaceSpaceByDashPipe } from './customPipes/replace-space-by-dash.pipe
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    MatIconModule,
     MatSelectModule,
     MatAutocompleteModule,
     MatListModule,

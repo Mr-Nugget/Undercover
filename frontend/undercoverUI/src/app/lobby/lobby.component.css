@@ -28,10 +28,6 @@ button {
     width: 150px;
 }
 
-mat-form-field {
-    border-bottom: red;
-}
-
 mat-progress-spinner {
     padding-bottom: 12px;
 }
@@ -48,4 +44,13 @@ mat-progress-spinner {
 
 .infos span {
     margin-bottom: 10px;
+}
+
+@media screen and (max-width: 850px) {
+    mat-form-field {
+        width: 80%;
+    }
+    .playerList {
+        width: 80%;
+    }
 }

@@ -4,6 +4,7 @@ import { GameService } from '../services/game.services';
 import { WebSocketService } from '../services/websocket.services';
 import { CookieService } from 'ngx-cookie-service';
 import { FormGroup, FormBuilder, NgForm } from "@angular/forms";
+import { environment } from '../../environments/environment';
 
 
 
@@ -13,7 +14,7 @@ import { FormGroup, FormBuilder, NgForm } from "@angular/forms";
   styleUrls: ['./lobby.component.css']
 })
 export class LobbyComponent implements OnInit, OnDestroy {
-  linkUrl: string = 'http://localhost:4200/lobby/';
+  linkUrl: string = environment.urlUI + '/lobby/';
   gameId : string;
   adminName: string;
   userName: string;

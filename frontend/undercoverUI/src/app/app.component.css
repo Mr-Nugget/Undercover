@@ -4,27 +4,71 @@ header {
     box-shadow: 0px -4px 8px 0px rgba(0, 0, 0, 0.75);
     padding-top: 20px;
     padding-bottom: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    display: flex;
+    justify-content: space-between;
 }
 
-header #title {
+header img {
+    height: 40px;
+    margin-right: 10px;
+}
+
+header h1 {
+    margin-bottom: 0;
+}
+
+header #title a {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 75px;
+    height: 50px;
+    color: black;
+}
+
+header #title a:hover {
+    text-decoration: inherit;
 }
 
 header #menu {
     display: flex;
     justify-content: space-around;
+    align-items: center;
 }
 
 header #menu .btn-container {
     display: flex;
     justify-content: center;
     width: 100%;
-    border-right: 1px solid #C3C3C3;
+    height: 40px;
 }
 
-#main {
-    height: 75vh;
+#phoneMenuButton,
+#phoneMenu {
+    display: none;
+}
+
+@media screen and (max-width: 850px) {
+    header {
+        position: relative;
+        justify-content: center;
+        width: 100%;
+    }
+    header h1 {
+        font-size: 20px;
+    }
+    #phoneMenuButton,
+    #phoneMenu {
+        display: block;
+        position: absolute;
+        right: 10px;
+        top: 0;
+    }
+    #phoneMenuButton {
+        height: 100%;
+    }
+    header #menu {
+        display: none;
+    }
 }

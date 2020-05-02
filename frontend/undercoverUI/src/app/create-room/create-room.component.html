@@ -1,22 +1,22 @@
 <div *ngIf="isReady" class="container" id="main">
     <div class="box-title">
-        <h1>Create a new game !</h1>
+        <h1>Créer une nouvelle partie !</h1>
     </div>
     <div class="form">
         <form [formGroup]="createGameForm" (ngSubmit)="submitForm()">
             <mat-form-field>
-                <mat-label>Username</mat-label>
+                <mat-label>Pseudo</mat-label>
                 <input matInput placeholder="My username" formControlName="username" required>
             </mat-form-field>
             <mat-form-field>
-                <mat-label>Number of players</mat-label>
+                <mat-label>Nombre de joueur</mat-label>
                 <mat-select [(value)]="selected" formControlName="players" required>
                     <mat-option value="3">3</mat-option>
                     <mat-option value="4">4</mat-option>
                     <mat-option value="5">5</mat-option>
                 </mat-select>
             </mat-form-field>
-            <button type="submit" class="submit" mat-raised-button color="accent">Create !</button>
+            <button type="submit" class="submit" mat-raised-button color="accent">Créer</button>
         </form>
     </div>
 </div>

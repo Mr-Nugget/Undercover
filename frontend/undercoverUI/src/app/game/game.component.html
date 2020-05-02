@@ -1,7 +1,10 @@
 <div *ngIf="isReady && !haveError" id="mainContent">
     <div class="gameContent">
         <div class="title">
-            <h2>Game</h2>
+            <h2>Partie en cours</h2>
+        </div>
+        <div class="yourWord">
+            <span>Ton mot : {{ myWord }}</span>
         </div>
         <div class="players">
             <div *ngFor="let player of listPlayers" class="player {{ player | replaceSpaceByDash }}" [ngClass]="[ username == player ? 'myPlayer' : '' ]">
@@ -23,7 +26,7 @@
         <div *ngIf="!isVoteTime" class="wordSender">
             <form [formGroup]="sendWordForm" (ngSubmit)="submitWordForm()" autocomplete="off">
                 <mat-form-field>
-                    <input id="wordInput" type="text" matInput formControlName="word" placeholder="Send your word" autocomplete="off">
+                    <input id="wordInput" type="text" matInput formControlName="word" placeholder="Envois ton mot..." autocomplete="off">
                 </mat-form-field>
                 <button type="submit" class="submit" mat-raised-button color="accent" [disabled]="!isMyTurn">
                     <span class="material-icons">
@@ -32,15 +35,12 @@
                 </button>
             </form>
             <div>
-                <span *ngIf="isMyTurn">It's your turn to send a word !</span>
-                <span *ngIf="!isMyTurn">It's {{ currentPlayer }}'s turn...</span>
+                <span *ngIf="isMyTurn">C'est à ton tour de jouer !</span>
+                <span *ngIf="!isMyTurn">C'est au tour de {{ currentPlayer }} de jouer.</span>
             </div>
         </div>
         <div *ngIf="isVoteTime" class="voteMessage">
-            <span>Vote for the undercover !</span>
-        </div>
-        <div class="yourWord">
-            <span>Your word : {{ myWord }}</span>
+            <span>Vote pour celui que tu penses être l'Undercover !</span>
         </div>
     </div>
     <div class="chat">
@@ -55,7 +55,7 @@
         <div class="write">
             <form [formGroup]="sendMessageForm" (ngSubmit)="submitChatForm()" autocomplete="off">
                 <mat-form-field>
-                    <input id="messageInput" type="text" matInput formControlName="message" placeholder="Type your message..." autofill='false' autocomplete="off">
+                    <input id="messageInput" type="text" matInput formControlName="message" placeholder="Ecris ton message ici..." autofill='false' autocomplete="off">
                 </mat-form-field>
                 <button type="submit" class="submit" mat-raised-button color="accent">
                     <span class="material-icons">
@@ -68,7 +68,7 @@
 </div>
 
 <div *ngIf="haveError && isReady" class="container" id="main">
-    <h1>Oops... Something went wrong</h1>
+    <h1>Oups... Une erreur est survenue</h1>
     <p>{{ messageError }}</p>
 </div>
 

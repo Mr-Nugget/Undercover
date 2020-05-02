@@ -1,5 +1,5 @@
 #mainContent {
-    height: 79vh;
+    height: 87.5vh;
     display: flex;
 }
 
@@ -12,7 +12,7 @@
 
 .gameContent {
     flex: 2;
-    padding-top: 20px;
+    padding-top: 50px;
     display: flex;
     flex-direction: column;
 }
@@ -51,6 +51,7 @@
 
 .wordSender {
     align-self: center;
+    text-align: center;
 }
 
 .voteMessage {
@@ -64,7 +65,7 @@
 
 .yourWord {
     text-align: center;
-    margin-top: 50px;
+    margin-bottom: 50px;
     font-size: 25px;
 }
 
@@ -80,6 +81,7 @@
 }
 
 .chat h3 {
+    margin-top: 15px;
     text-align: center;
 }
 
@@ -117,4 +119,23 @@ mat-form-field {
 .submit {
     width: 10%;
     height: 40px;
+}
+
+@media screen and (max-width: 850px) {
+    #mainContent {
+        display: flex;
+        flex-direction: column;
+        height: auto;
+    }
+    .gameContent {
+        flex: 1;
+        border-bottom: 1px solid #c3c3c3;
+        padding-bottom: 50px;
+    }
+    .chat {
+        height: 40vh;
+    }
+    .write {
+        height: 12vh;
+    }
 }
