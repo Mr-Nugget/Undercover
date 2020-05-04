@@ -11,7 +11,7 @@
 /*------------- GAME BOARD ------------*/
 
 .gameContent {
-    flex: 2;
+    width: 70vw;
     padding-top: 50px;
     display: flex;
     flex-direction: column;
@@ -39,6 +39,27 @@
 
 .players h4 {
     margin-bottom: 0;
+}
+
+.player{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 10vw;
+}
+
+.voteCpt{
+    background-color: darkgreen;
+    width: 30px;
+    height: 30px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    opacity: 0;
+    cursor: default;
 }
 
 .player h3 {
@@ -73,7 +94,7 @@
 /* ------------ CHAT CSS ------------ */
 
 .chat {
-    flex: 1;
+    width: 30vw;
     margin: 50px 30px 50px 30px;
     border: solid 1px #C9C9C9;
     display: flex;
@@ -87,6 +108,7 @@
 
 .messages {
     height: 70%;
+    max-width: 100%;
     overflow-y: auto;
     padding-left: 10px;
     padding-right: 10px;
@@ -128,11 +150,12 @@ mat-form-field {
         height: auto;
     }
     .gameContent {
-        flex: 1;
+        width: inherit;
         border-bottom: 1px solid #c3c3c3;
         padding-bottom: 50px;
     }
     .chat {
+        width: inherit;
         height: 40vh;
     }
     .write {

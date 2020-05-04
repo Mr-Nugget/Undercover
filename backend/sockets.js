@@ -31,6 +31,11 @@ module.exports.listen = function(server) {
             socketControllers.broadcastMessage(data['message'], roomId, name, socket);
         });
 
+        socket.on('vote', (data) => {
+            console.log(data);
+            socketControllers.vote(data['index'], data['username'], data['players'], roomId, socket);
+        });
+
         socket.on('disconnect', () => {
             socket.leave(roomId);
 

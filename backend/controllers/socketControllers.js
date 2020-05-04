@@ -121,7 +121,7 @@ exports.nextPlayer = (gameId, word, counter, emitterName, io) => {
     var position = 0;
     var playersNum = Object.keys(clients).length;
     var positionOfEmitter = counter % playersNum;
-    var positionOfNextPlayer = positionOfEmitter == 2 ? 0 : positionOfEmitter + 1;
+    var positionOfNextPlayer = positionOfEmitter == (playersNum - 1) ? 0 : positionOfEmitter + 1;
 
 
     for (var clientId in clients) {
@@ -140,7 +140,12 @@ exports.nextPlayer = (gameId, word, counter, emitterName, io) => {
         position++;
         // End of word sending, let's go to the vote !
         if (counter == 3 * playersNum - 1) {
-            io.sockets.in(gameId).emit('vote');
+            io.sockets.in(gameId).emit('voteTime');
         }
     }
+};
+
+// Emit to the others players of the room a vote
+exports.vote = (index, username, players, roomId, socket) => {
+    socket.to(roomId).emit('vote', { index: index, players: players, username: username });
 };

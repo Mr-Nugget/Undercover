@@ -14,7 +14,7 @@ export class GameComponent implements OnInit {
   sendMessageForm: FormGroup;
   gameId: string;
   sendWordForm: FormGroup;
-  listPlayers: string[] = [];
+  listPlayers: any[] = [];
   wordsList: string[] = [];
   username: string;
   position: number;
@@ -25,9 +25,11 @@ export class GameComponent implements OnInit {
   myWord: string;
   isReady: boolean = false;
   isVoteTime: boolean = false;
+  alreadyVote: boolean = false;
   haveError: boolean;
   messageError: any;
   errorWord: string;
+  positionVoter: number;
 
   constructor(private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -57,11 +59,18 @@ export class GameComponent implements OnInit {
     // Subscribe to init game event to launch the game
     this.socketService.listen('init-game').subscribe(
       (data) => {
-        this.listPlayers = data['players'];
+        var players = data['players'];
+        for (var index in players) {
+          this.listPlayers.push({
+            username: players[index],
+            vote: 0,
+            words : []
+          });
+        }
         this.position = data['position'];
         this.isMyTurn = data['isMyTurn'];
-        this.username = this.listPlayers[this.position];
-        this.currentPlayer = this.listPlayers[0];
+        this.username = this.listPlayers[this.position].username;
+        this.currentPlayer = this.listPlayers[0].username;
         this.myWord = data['yourWord'];
         this.isReady = true;
       }
@@ -78,21 +87,34 @@ export class GameComponent implements OnInit {
           var wordClean = this.cleanWord(data['word']);
           this.wordsList.push(wordClean);
         }
-        this.currentPlayer = this.listPlayers[data['nextPosition']];
+        this.currentPlayer = this.listPlayers[data['nextPosition']].username;
         this.counter = data['counter'];
       }
     );
 
     // Listen to the vote time
-    this.socketService.listen('vote').subscribe(
+    this.socketService.listen('voteTime').subscribe(
       () => {
         this.isVoteTime = true;
+        $(".voteCpt").css('opacity', '0.95');
+        $(".avatar").css('cursor', 'pointer');
       }
     );
+
+    // Listen to a aplyer vote
+    this.socketService.listen('vote').subscribe(
+      (data) => {
+        console.log(data);
+        var index = data['index'];
+        this.listPlayers = data['players'];
+        this.submitAChatMessage(data['username'], "a voté pour " + this.listPlayers[index].username);
+      }
+    );
+
     // Chat listener
     this.socketService.listen('message').subscribe(
       (data) => {
-        $("#messagesList").append("<mat-list-item>" + data['username'] + " : " + data['message'] + "</mat-list-item><br>");
+        this.submitAChatMessage(data['username'], data['message']);
       }
     );
   }
@@ -100,27 +122,28 @@ export class GameComponent implements OnInit {
   // Send a message from the chat form
   submitChatForm() {
     var message = this.sendMessageForm.value['message'];
-    this.socketService.emit('message', { gameId: this.gameId, message: message });
-    $("#messagesList").append("<mat-list-item class='myMessage'>" + this.username + ": " + message + "</mat-list-item><br>");
-    $("#messageInput").val('');
+    if (message != '') {
+      this.socketService.emit('message', { gameId: this.gameId, message: message });
+      this.submitAChatMessage(this.username, message);
+      $("#messageInput").val('');
+    }
   }
 
   // Send your word during the game
   submitWordForm() {
     var myWord = this.sendWordForm.value['word'].trim();
-    var wordClean = this.cleanWord(myWord);
-    console.log(myWord + "       " + wordClean);
-    if (this.wordsList.includes(wordClean)) {
-      console.log("ici");
-      this.errorWord = 'This word have already been used !'
-    } else {
-      this.socketService.emit('next-player', { gameId: this.gameId, word: myWord, counter: this.counter, username: this.username });
-      $(".myPlayer .wordProposal").append("<mat-list-item>" + myWord + "</mat-list-item><br>");
-      $("#wordInput").val('');
-      this.isMyTurn = false;
-      this.wordsList.push(wordClean);
+    if (myWord != '') {
+      var wordClean = this.cleanWord(myWord);
+      if (this.wordsList.includes(wordClean)) {
+        this.errorWord = 'Ce mot a déjà été utilisé !'
+      } else {
+        this.socketService.emit('next-player', { gameId: this.gameId, word: myWord, counter: this.counter, username: this.username });
+        $(".myPlayer .wordProposal").append("<mat-list-item>" + myWord + "</mat-list-item><br>");
+        $("#wordInput").val('');
+        this.isMyTurn = false;
+        this.wordsList.push(wordClean);
+      }
     }
-
   }
 
   // Clean a word to add it to the wordList to check if a word has already been used
@@ -135,6 +158,26 @@ export class GameComponent implements OnInit {
       .toLowerCase();
 
     return newWord;
+  }
+
+  // Gngngngn tu mets pas des commentaires mais c'est évident la connard
+  submitAChatMessage(username, message) {
+    $("#messagesList").append("<mat-list-item class='myMessage'>" + username + ": " + message + "</mat-list-item><br>");
+  }
+
+  // Emit to the other a vote for someone
+  voteForThisPlayer(index) {
+    if (this.isVoteTime && index != this.positionVoter && this.listPlayers[index].username != this.username) {
+      if (this.alreadyVote) {
+        this.listPlayers[this.positionVoter].vote--;
+      } else {
+        this.alreadyVote = true;
+      }
+      this.positionVoter = index;
+      this.listPlayers[index].vote++;
+      this.socketService.emit('vote', { username: this.username, index: index, players: this.listPlayers });
+      this.submitAChatMessage(this.username, "a voté pour " + this.listPlayers[index].username);
+    }
   }
 
 }

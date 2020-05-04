@@ -42,7 +42,7 @@
         <form [formGroup]="setYourNameForm" (ngSubmit)="submitForm()">
             <mat-form-field>
                 <mat-label>Pseudo :</mat-label>
-                <input matInput formControlName="name">
+                <input matInput formControlName="name" maxlength="20">
             </mat-form-field>
             <button type="submit" class="submit" mat-raised-button color="accent">Rejoindre !</button>
         </form>

@@ -6,7 +6,7 @@
         <form [formGroup]="createGameForm" (ngSubmit)="submitForm()">
             <mat-form-field>
                 <mat-label>Pseudo</mat-label>
-                <input matInput placeholder="My username" formControlName="username" required>
+                <input matInput placeholder="My username" formControlName="username" maxlength="20" required>
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Nombre de joueur</mat-label>
