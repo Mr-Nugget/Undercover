@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, NgForm } from "@angular/forms";
+import { FormGroup, FormBuilder, NgForm, Validators } from "@angular/forms";
 import { ActivatedRoute } from '@angular/router';
 import { WebSocketService } from '../services/websocket.services';
 import { CookieService } from 'ngx-cookie-service';
@@ -41,11 +41,11 @@ export class GameComponent implements OnInit {
     this.gameId = this.route.snapshot.params['id'];
     // Setting up the chat form
     this.sendMessageForm = this.formBuilder.group({
-      message: ['']
+      message: ['', [Validators.required]]
     });
     // Setting up the chat form
     this.sendWordForm = this.formBuilder.group({
-      word: ['']
+      word: ['', [Validators.required, Validators.pattern('^[a-z,A-Z,-]+')]]
     });
 
     // Subscribe to error event
@@ -63,8 +63,7 @@ export class GameComponent implements OnInit {
         for (var index in players) {
           this.listPlayers.push({
             username: players[index],
-            vote: 0,
-            words : []
+            vote: 0
           });
         }
         this.position = data['position'];
@@ -96,8 +95,8 @@ export class GameComponent implements OnInit {
     this.socketService.listen('voteTime').subscribe(
       () => {
         this.isVoteTime = true;
-        $(".voteCpt").css('opacity', '0.95');
-        $(".avatar").css('cursor', 'pointer');
+        $('.avatar').css('cursor', 'pointer');
+        $('.voteCpt').css('cursor', 'pointer');
       }
     );
 
@@ -105,16 +104,19 @@ export class GameComponent implements OnInit {
     this.socketService.listen('vote').subscribe(
       (data) => {
         console.log(data);
-        var index = data['index'];
-        this.listPlayers = data['players'];
-        this.submitAChatMessage(data['username'], "a voté pour " + this.listPlayers[index].username);
+        const index = data['index'];
+        const players = data['players'];
+        for(var i in players){
+          this.listPlayers[i].vote = players[i].vote;
+        }
+        this.submitAChatMessage(data['username'], "a voté pour " + this.listPlayers[index].username, "voteMessage");
       }
     );
 
     // Chat listener
     this.socketService.listen('message').subscribe(
       (data) => {
-        this.submitAChatMessage(data['username'], data['message']);
+        this.submitAChatMessage(data['username'], data['message'], "");
       }
     );
   }
@@ -124,7 +126,7 @@ export class GameComponent implements OnInit {
     var message = this.sendMessageForm.value['message'];
     if (message != '') {
       this.socketService.emit('message', { gameId: this.gameId, message: message });
-      this.submitAChatMessage(this.username, message);
+      this.submitAChatMessage(this.username, message, "myMessage");
       $("#messageInput").val('');
     }
   }
@@ -161,8 +163,8 @@ export class GameComponent implements OnInit {
   }
 
   // Gngngngn tu mets pas des commentaires mais c'est évident la connard
-  submitAChatMessage(username, message) {
-    $("#messagesList").append("<mat-list-item class='myMessage'>" + username + ": " + message + "</mat-list-item><br>");
+  submitAChatMessage(username, message, customClasses) {
+    $("#messagesList").append("<mat-list-item class='"+ customClasses +"'>" + username + ": " + message + "</mat-list-item><br>");
   }
 
   // Emit to the other a vote for someone
@@ -176,7 +178,7 @@ export class GameComponent implements OnInit {
       this.positionVoter = index;
       this.listPlayers[index].vote++;
       this.socketService.emit('vote', { username: this.username, index: index, players: this.listPlayers });
-      this.submitAChatMessage(this.username, "a voté pour " + this.listPlayers[index].username);
+      this.submitAChatMessage(this.username, "a voté pour " + this.listPlayers[index].username, "voteMessage");
     }
   }
 

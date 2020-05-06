@@ -58,7 +58,6 @@
     align-items: center;
     justify-content: center;
     color: white;
-    opacity: 0;
     cursor: default;
 }
 
@@ -95,6 +94,7 @@
 
 .chat {
     width: 30vw;
+    height: 550px;
     margin: 50px 30px 50px 30px;
     border: solid 1px #C9C9C9;
     display: flex;
@@ -107,7 +107,7 @@
 }
 
 .messages {
-    height: 70%;
+    height: 500px;
     max-width: 100%;
     overflow-y: auto;
     padding-left: 10px;
@@ -120,7 +120,7 @@
 }
 
 .write {
-    height: 10%;
+    height: 17%;
     width: 100%;
     padding-top: 10px;
     padding-right: 20px;
@@ -136,6 +136,14 @@ form {
 
 mat-form-field {
     width: 90%;
+}
+
+.voteMessage{
+    color: darkgreen;
+}
+
+.myMessage{
+    color: darkgrey;
 }
 
 .submit {

@@ -35,7 +35,8 @@ export class CreateRoomComponent implements OnInit {
     this.gameService.createGame(players, username)
       .then((result) => {
         // Set cookie to know it's the admin
-        this.cookieService.set('isAdmin', username);
+        this.cookieService.set('username', username);
+        this.cookieService.set('isAdmin', result['gameId']);
         this.router.navigate(['/lobby/' + result['gameId']]);
       })
       .catch((error) => {

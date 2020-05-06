@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { GameService } from '../services/game.services';
 import { WebSocketService } from '../services/websocket.services';
 import { CookieService } from 'ngx-cookie-service';
 import { FormGroup, FormBuilder, NgForm } from "@angular/forms";
@@ -41,10 +40,10 @@ export class LobbyComponent implements OnInit, OnDestroy {
     this.linkUrl += this.gameId;
 
     // Check in the cookie if it's the creator of the game
-    this.isAdmin = this.cookieService.check('isAdmin');
+    this.isAdmin = this.cookieService.get('isAdmin') == this.gameId;
         
     if(this.isAdmin){
-      this.adminName = this.cookieService.get('isAdmin');
+      this.adminName = this.cookieService.get('username');
       this.haveUsername = true;
       // Join the socket room
       this.joinSocketRoom(this.gameId, this.adminName);

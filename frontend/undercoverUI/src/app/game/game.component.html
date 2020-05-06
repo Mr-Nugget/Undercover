@@ -8,7 +8,7 @@
         </div>
         <div class="players">
             <div *ngFor="let player of listPlayers; let index = index;" class="player {{ player.username | replaceSpaceByDash }}" [ngClass]="[ username == player.username ? 'myPlayer' : '' ]">
-                <div class="voteCpt animation-target">
+                <div *ngIf="isVoteTime" class="voteCpt animation-target">
                     <div>
                         <span>{{ player.vote }}</span>
                     </div>
