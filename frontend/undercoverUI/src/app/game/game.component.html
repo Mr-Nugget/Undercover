@@ -1,5 +1,5 @@
 <div *ngIf="isReady && !haveError" id="mainContent">
-    <div class="gameContent">
+    <div *ngIf="!isOver" class="gameContent">
         <div class="title">
             <h2>Partie en cours</h2>
         </div>
@@ -7,18 +7,20 @@
             <span>Ton mot : {{ myWord }}</span>
         </div>
         <div class="players">
-            <div *ngFor="let player of listPlayers; let index = index;" class="player {{ player.username | replaceSpaceByDash }}" [ngClass]="[ username == player.username ? 'myPlayer' : '' ]">
-                <div *ngIf="isVoteTime" class="voteCpt animation-target">
+            <div *ngFor="let player of listPlayers; let index = index;"
+                class="player {{ player.username | replaceSpaceByDash }}"
+                [ngClass]="[ username == player.username ? 'myPlayer' : '' ]">
+                <div *ngIf="isVoteTime" (click)="voteForThisPlayer(index)" class="voteCpt animation-target">
                     <div>
                         <span>{{ player.vote }}</span>
                     </div>
                 </div>
-            <div class="avatar" (click)="voteForThisPlayer(index)">
+                <div class="avatar" (click)="voteForThisPlayer(index)">
                     <span class="material-icons">
                         face
                     </span>
                 </div>
-                <div>
+                <div (click)="voteForThisPlayer(index)">
                     <h3>{{ player.username }}</h3>
                 </div>
                 <div>
@@ -31,7 +33,8 @@
         <div *ngIf="!isVoteTime" class="wordSender">
             <form [formGroup]="sendWordForm" (ngSubmit)="submitWordForm()" autocomplete="off">
                 <mat-form-field>
-                    <input id="wordInput" type="text" matInput formControlName="word" placeholder="Envois ton mot..." autocomplete="off" maxlength="36">
+                    <input id="wordInput" type="text" matInput formControlName="word" placeholder="Envois ton mot..."
+                        autocomplete="off" maxlength="36">
                 </mat-form-field>
                 <button type="submit" class="submit" mat-raised-button color="accent" [disabled]="!isMyTurn">
                     <span class="material-icons">
@@ -39,13 +42,26 @@
                     </span>
                 </button>
             </form>
-            <div>
+            <div class="playerTurn">
                 <span *ngIf="isMyTurn">C'est à ton tour de jouer !</span>
                 <span *ngIf="!isMyTurn">C'est au tour de {{ currentPlayer }} de jouer.</span>
             </div>
         </div>
-        <div *ngIf="isVoteTime" class="voteMessage">
-            <span>Vote pour celui que tu penses être l'Undercover !</span>
+        <div *ngIf="isVoteTime && !closedVote" class="voteMessage">
+            <span>Vote pour celui que tu penses être l'Undercover !</span><br>
+            <button id="voteButton" class="submit" mat-raised-button color="accent" (click)="validateVote();"
+                [disabled]="!playerVoteSelected">Voter !</button>
+        </div>
+        <div *ngIf="isVoteTime && closedVote" class="voteMessage">
+            <span>Tu as voté pour {{ myUndercover }}</span>
+        </div>
+    </div>
+    <div *ngIf="isOver" class="gameContent">
+        <div class="reveal">
+            <h1>Game over</h1>
+            <span>L'undercover était : <strong>{{ undercoverUsername }}</strong></span><br>
+            <span>Son mot était : <strong>{{ undercoverWord }}</strong></span><br>
+            <span>Le mot des autres joueurs était : <strong>{{ normalWord }}</strong></span><br>
         </div>
     </div>
     <div class="chat">
@@ -60,7 +76,8 @@
         <div class="write">
             <form [formGroup]="sendMessageForm" (ngSubmit)="submitChatForm()" autocomplete="off">
                 <mat-form-field>
-                    <input id="messageInput" type="text" matInput formControlName="message" placeholder="Ecris ton message ici..." autofill='false' autocomplete="off" maxlength="128">
+                    <input id="messageInput" type="text" matInput formControlName="message"
+                        placeholder="Ecris ton message ici..." autofill='false' autocomplete="off" maxlength="128">
                 </mat-form-field>
                 <button type="submit" class="submit" mat-raised-button color="accent">
                     <span class="material-icons">

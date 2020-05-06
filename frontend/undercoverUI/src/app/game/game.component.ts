@@ -11,8 +11,8 @@ import * as $ from 'jquery';
   styleUrls: ['./game.component.css']
 })
 export class GameComponent implements OnInit {
-  sendMessageForm: FormGroup;
   gameId: string;
+  sendMessageForm: FormGroup;
   sendWordForm: FormGroup;
   listPlayers: any[] = [];
   wordsList: string[] = [];
@@ -30,6 +30,15 @@ export class GameComponent implements OnInit {
   messageError: any;
   errorWord: string;
   positionVoter: number;
+  myUndercover: string;
+  playerVoteSelected: boolean = false;
+  closedVote: boolean = false;
+  cptVote: number = 0;
+  undercoverWord: any;
+  normalWord: any;
+  amIUndercover: boolean;
+  isOver: boolean = false;
+  undercoverUsername: string;
 
   constructor(private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -67,10 +76,16 @@ export class GameComponent implements OnInit {
           });
         }
         this.position = data['position'];
-        this.isMyTurn = data['isMyTurn'];
+        if(this.position == 0){
+          this.isMyTurn = true;
+        }
         this.username = this.listPlayers[this.position].username;
         this.currentPlayer = this.listPlayers[0].username;
         this.myWord = data['yourWord'];
+        this.undercoverWord = data['undercoverWord'];
+        this.normalWord = data['normalWord'];
+        this.amIUndercover = data['undercoverPosition'] == this.position;
+        this.undercoverUsername = this.listPlayers[data['undercoverPosition']].username;
         this.isReady = true;
       }
     );
@@ -103,12 +118,12 @@ export class GameComponent implements OnInit {
     // Listen to a aplyer vote
     this.socketService.listen('vote').subscribe(
       (data) => {
-        console.log(data);
         const index = data['index'];
         const players = data['players'];
         for(var i in players){
           this.listPlayers[i].vote = players[i].vote;
         }
+        this.cptVote++;
         this.submitAChatMessage(data['username'], "a voté pour " + this.listPlayers[index].username, "voteMessage");
       }
     );
@@ -117,6 +132,12 @@ export class GameComponent implements OnInit {
     this.socketService.listen('message').subscribe(
       (data) => {
         this.submitAChatMessage(data['username'], data['message'], "");
+      }
+    );
+
+    this.socketService.listen('end-game').subscribe(
+      () => {
+        this.isOver = true;
       }
     );
   }
@@ -167,19 +188,36 @@ export class GameComponent implements OnInit {
     $("#messagesList").append("<mat-list-item class='"+ customClasses +"'>" + username + ": " + message + "</mat-list-item><br>");
   }
 
-  // Emit to the other a vote for someone
+  // Preshot the person you want to vote for
   voteForThisPlayer(index) {
-    if (this.isVoteTime && index != this.positionVoter && this.listPlayers[index].username != this.username) {
+    if (!this.closedVote && this.isVoteTime && index != this.positionVoter && this.listPlayers[index].username != this.username) {
       if (this.alreadyVote) {
-        this.listPlayers[this.positionVoter].vote--;
+        var classOldPlayer = this.listPlayers[this.positionVoter].username.replace(/\s/g, '-');
+        $('.' + classOldPlayer + ' .avatar').css('color', 'black');
       } else {
         this.alreadyVote = true;
       }
       this.positionVoter = index;
-      this.listPlayers[index].vote++;
-      this.socketService.emit('vote', { username: this.username, index: index, players: this.listPlayers });
-      this.submitAChatMessage(this.username, "a voté pour " + this.listPlayers[index].username, "voteMessage");
+      this.playerVoteSelected = true;
+      var classPlayer = this.listPlayers[this.positionVoter].username.replace(/\s/g, '-');
+      $('.'+ classPlayer + ' .avatar').css('color', 'red');
+      
     }
+  }
+
+  // Emit your choice
+  validateVote(){
+      this.listPlayers[this.positionVoter].vote++;
+      this.myUndercover = this.listPlayers[this.positionVoter].username;
+      this.socketService.emit('vote', { username: this.username, index: this.positionVoter, players: this.listPlayers });
+      this.submitAChatMessage(this.username, "a voté pour " + this.listPlayers[this.positionVoter].username, "voteMessage");
+      this.playerVoteSelected = false;
+      this.closedVote = true;
+      // Check if everybody has voted
+      this.cptVote++;
+      if(this.cptVote == this.listPlayers.length){
+        this.socketService.emit('end-game', {});
+      }
   }
 
 }

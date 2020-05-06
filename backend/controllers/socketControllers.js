@@ -85,15 +85,31 @@ exports.launchGame = (gameId, name, io, socketId) => {
                 if (!err) {
                     var clients = io.sockets.adapter.rooms[gameId].sockets;
                     var position = 0;
-                    var words = WordsTool.selectRandomWord(game['playersNum'], result);
+                    var words = WordsTool.selectRandomWord(result);
+                    // Pick a random player position
+                    var undercoverPosition = Math.floor(Math.random() * game['playersNum']);
                     for (var clientId in clients) {
                         // This is the socket of each client in the room.
                         var clientSocket = io.sockets.connected[clientId];
-                        if (position == 0) {
-                            clientSocket.emit('init-game', { players: game['players'], isMyTurn: true, position: position, yourWord: words[position] });
-                        } else {
-                            clientSocket.emit('init-game', { players: game['players'], isMyTurn: false, position: position, yourWord: words[position] });
+                        if(position == undercoverPosition){
+                            clientSocket.emit('init-game', { players: game['players'],
+                                                             position: position,
+                                                             yourWord: words.undercoverWord,
+                                                             undercoverPosition: undercoverPosition,
+                                                             undercoverWord: words.undercoverWord,
+                                                             normalWord: words.normalWord
+                                                            });
                         }
+                        else {
+                            clientSocket.emit('init-game', { players: game['players'],
+                                                             position: position,
+                                                             yourWord: words.normalWord,
+                                                             undercoverPosition: undercoverPosition,
+                                                             undercoverWord: words.undercoverWord,
+                                                             normalWord: words.normalWord
+                                                            });
+                        }
+
                         position++;
                     }
                 } else {
@@ -148,4 +164,8 @@ exports.nextPlayer = (gameId, word, counter, emitterName, io) => {
 // Emit to the others players of the room a vote
 exports.vote = (index, username, players, roomId, socket) => {
     socket.to(roomId).emit('vote', { index: index, players: players, username: username });
+};
+
+exports.endGame = (roomId, io) => {
+    io.sockets.in(roomId).emit('end-game');
 };

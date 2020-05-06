@@ -32,8 +32,11 @@ module.exports.listen = function(server) {
         });
 
         socket.on('vote', (data) => {
-            console.log(data);
             socketControllers.vote(data['index'], data['username'], data['players'], roomId, socket);
+        });
+
+        socket.on('end-game', () => {
+            socketControllers.endGame(roomId, io);
         });
 
         socket.on('disconnect', () => {
