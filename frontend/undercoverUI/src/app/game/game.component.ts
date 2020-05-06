@@ -39,6 +39,8 @@ export class GameComponent implements OnInit {
   amIUndercover: boolean;
   isOver: boolean = false;
   undercoverUsername: string;
+  undercoverPosition: number;
+  resultMessage: string;
 
   constructor(private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -84,8 +86,9 @@ export class GameComponent implements OnInit {
         this.myWord = data['yourWord'];
         this.undercoverWord = data['undercoverWord'];
         this.normalWord = data['normalWord'];
-        this.amIUndercover = data['undercoverPosition'] == this.position;
-        this.undercoverUsername = this.listPlayers[data['undercoverPosition']].username;
+        this.undercoverPosition = data['undercoverPosition'];
+        this.amIUndercover = this.undercoverPosition == this.position;
+        this.undercoverUsername = this.listPlayers[this.undercoverPosition].username;
         this.isReady = true;
       }
     );
@@ -138,6 +141,28 @@ export class GameComponent implements OnInit {
     this.socketService.listen('end-game').subscribe(
       () => {
         this.isOver = true;
+        if(this.amIUndercover){
+          const nbVote = this.listPlayers[this.position].vote;
+          if(nbVote == 0){
+            this.resultMessage = "Bravo ! Personne n'a découvert ton identié d'Undercover";
+            $("#resultMessage").css('color', 'green');
+          }else{
+            if(nbVote == 1){
+              this.resultMessage = "Perdu ! 1 personne a découvert ton identité...";
+            }else{
+              this.resultMessage = "Perdu ! " + nbVote + " personnes ont découvert ton identité...";
+            }
+            $("#resultMessage").css('color', 'red');
+          }
+        }else{
+          if(this.positionVoter == this.undercoverPosition){
+            this.resultMessage = "Bravo ! Tu as démasqué l'Undercover.";
+            $("#resultMessage").css('color', 'green');
+          }else{
+            this.resultMessage = "Perdu ! Tu n'as pas démasqué l'Undercover...";
+            $("#resultMessage").css('color', 'red');
+          }
+        }
       }
     );
   }
