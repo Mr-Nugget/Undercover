@@ -30,6 +30,10 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { GameComponent } from './game/game.component';
 import { ReplaceSpaceByDashPipe } from './customPipes/replace-space-by-dash.pipe';
 import { RulesComponent } from './rules/rules.component';
+import { AuthentificationComponent } from './authentification/authentification.component';
+import { AddWordsComponent } from './add-words/add-words.component';
+import { UserService } from './services/user.services';
+import { AuthGuard } from './services/auth-guard.services';
 
 
 
@@ -40,7 +44,9 @@ import { RulesComponent } from './rules/rules.component';
     LobbyComponent,
     GameComponent,
     ReplaceSpaceByDashPipe,
-    RulesComponent
+    RulesComponent,
+    AuthentificationComponent,
+    AddWordsComponent
   ],
   
   imports: [
@@ -64,7 +70,9 @@ import { RulesComponent } from './rules/rules.component';
 
   providers: [
     GameService,
-    CookieService
+    CookieService,
+    UserService, 
+    AuthGuard
   ],
   bootstrap: [AppComponent]
 })

@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 
 const gameRoutes = require('./routes/gameRoutes');
 const wordRoutes = require('./routes/wordRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 
 
@@ -29,5 +30,7 @@ app.use(bodyParser.json());
 app.use('/game', gameRoutes);
 
 app.use('/word', wordRoutes);
+
+app.use('/user', userRoutes);
 
 module.exports = app;

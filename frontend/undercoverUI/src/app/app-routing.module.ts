@@ -4,6 +4,9 @@ import { CreateRoomComponent } from './create-room/create-room.component';
 import { LobbyComponent } from './lobby/lobby.component';
 import { GameComponent } from './game/game.component';
 import { RulesComponent } from './rules/rules.component';
+import { AuthentificationComponent } from './authentification/authentification.component';
+import { AddWordsComponent } from './add-words/add-words.component';
+import { AuthGuard } from './services/auth-guard.services';
 
 
 
@@ -12,7 +15,9 @@ const routes: Routes = [
   { path: 'lobby', component: LobbyComponent },
   { path: 'lobby/:id', component: LobbyComponent },
   { path: 'game/:id', component: GameComponent },
-  { path: 'rules', component: RulesComponent }
+  { path: 'rules', component: RulesComponent },
+  { path: 'authentification', component: AuthentificationComponent },
+  { path: 'addWord', canActivate: [AuthGuard],component: AddWordsComponent }
 ];
 
 @NgModule({
