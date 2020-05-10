@@ -42,3 +42,18 @@ exports.addUser = (req, res, next) => {
     });
 
 };
+
+exports.userExists = (req, res, next) => {
+    User.findOne({ username: req.params.username })
+        .then(user => {
+            if(user != null){
+                res.status(200).json({exist: true});
+            }else{
+                res.status(404).json({exist: false});
+            }
+            
+        })
+        .catch((err) =>{
+            res.status(404).json({exist: false});
+        });
+};

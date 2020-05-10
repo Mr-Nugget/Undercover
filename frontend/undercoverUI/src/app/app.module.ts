@@ -9,6 +9,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { GameService } from './services/game.services';
 
 import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
+
 
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon'
@@ -34,6 +36,7 @@ import { AuthentificationComponent } from './authentification/authentification.c
 import { AddWordsComponent } from './add-words/add-words.component';
 import { UserService } from './services/user.services';
 import { AuthGuard } from './services/auth-guard.services';
+import { WordService } from './services/word.services';
 
 
 
@@ -65,13 +68,15 @@ import { AuthGuard } from './services/auth-guard.services';
     MatListModule,
     ClipboardModule,
     MatProgressSpinnerModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    FormsModule
   ],
 
   providers: [
     GameService,
     CookieService,
-    UserService, 
+    UserService,
+    WordService, 
     AuthGuard
   ],
   bootstrap: [AppComponent]

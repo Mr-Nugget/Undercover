@@ -17,7 +17,7 @@ const routes: Routes = [
   { path: 'game/:id', component: GameComponent },
   { path: 'rules', component: RulesComponent },
   { path: 'authentification', component: AuthentificationComponent },
-  { path: 'addWord', canActivate: [AuthGuard],component: AddWordsComponent }
+  { path: 'addWord', canActivate: [AuthGuard], component: AddWordsComponent }
 ];
 
 @NgModule({

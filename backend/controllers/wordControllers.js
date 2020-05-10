@@ -45,7 +45,8 @@ exports.getRandomWordsAPI = (req, res, next) => {
 exports.createWord = (req, res, next) => {
     const newWord = new Word({
         firstWord: req.body['firstWord'],
-        secondWord: req.body['secondWord']
+        secondWord: req.body['secondWord'],
+        creator: req.body['username']
     });
 
     newWord.save(function(err, game) {

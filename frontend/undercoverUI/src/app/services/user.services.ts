@@ -12,11 +12,17 @@ export class UserService{
     private url: string = environment.urlAPI;
 
     constructor(private httpClient: HttpClient){}
-
+    // Log a user
     async login(username: string, password: string){
         return await this.httpClient
             .post(this.url + '/user/getByUsername', { username : username, password: password })
             .toPromise();
+    }
+    // Check if a user exists
+    async exist(username: string){
+        return await this.httpClient
+                .get(this.url + '/user/userExists/' + username)
+                .toPromise();
     }
 
     setIsAuth(isAuth: boolean){
