@@ -27,7 +27,6 @@ import { CookieService } from 'ngx-cookie-service';
 
 import { CreateRoomComponent } from './create-room/create-room.component';
 import { LobbyComponent } from './lobby/lobby.component';
-import { from } from 'rxjs';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { GameComponent } from './game/game.component';
 import { ReplaceSpaceByDashPipe } from './customPipes/replace-space-by-dash.pipe';
@@ -49,7 +48,7 @@ import { WordService } from './services/word.services';
     ReplaceSpaceByDashPipe,
     RulesComponent,
     AuthentificationComponent,
-    AddWordsComponent
+    AddWordsComponent,
   ],
   
   imports: [
@@ -69,8 +68,7 @@ import { WordService } from './services/word.services';
     ClipboardModule,
     MatProgressSpinnerModule,
     FontAwesomeModule,
-    FormsModule
-  ],
+    FormsModule  ],
 
   providers: [
     GameService,

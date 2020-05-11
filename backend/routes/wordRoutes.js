@@ -9,4 +9,8 @@ router.post('/add', WordController.createWord);
 
 router.get('/count', WordController.countWords);
 
+router.get('/userWords/:username', WordController.getUserWords);
+
+router.post('/checkWords', WordController.checkExists);
+
 module.exports = router;

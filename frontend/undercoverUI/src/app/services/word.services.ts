@@ -13,7 +13,7 @@ export class WordService{
     constructor(private httpClient: HttpClient){}
 
     addWord(word1: string, word2: string, username: string){
-        this.httpClient.post(this.url + '/word/add', { firstWord : word1, secondWord: word2, username: username })
+        this.httpClient.post(this.url + '/word/add', { firstWord : this.capitalize(word1), secondWord: this.capitalize(word2), username: username })
             .subscribe(
                 () => {
                     console.log("Create words success !");   
@@ -23,4 +23,14 @@ export class WordService{
                 });
     }
 
+    async checkWord(word1: string, word2: string){
+        return await this.httpClient.post(this.url + '/word/checkWords',
+                            {firstWord: this.capitalize(word1), secondWord: this.capitalize(word2)})
+                        .toPromise();
+    }
+
+    capitalize(s){
+        if (typeof s !== 'string') return ''
+        return s.charAt(0).toUpperCase() + s.slice(1)
+    }
 }
