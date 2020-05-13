@@ -60,6 +60,7 @@ export class LobbyComponent implements OnInit, OnDestroy {
         this.haveError = true;
         this.messageError = data['message'];
         this.isReady = true;
+        this.soundService.playSound('leave.wav');
       }
     );
     // Subscribe for launching the game when the room is full
@@ -78,6 +79,7 @@ export class LobbyComponent implements OnInit, OnDestroy {
     this.haveUsername = true;
     this.joinSocketRoom(this.gameId, this.userName);
   }
+  
   // Emit to the others and subscribes to users comming and leaving events
   joinSocketRoom(gameId: string, username: string){
     this.socketService.emit('room', gameId);

@@ -57,7 +57,7 @@ export class GameComponent implements OnInit {
     });
     // Setting up the chat form
     this.sendWordForm = this.formBuilder.group({
-      word: ['', [Validators.required, Validators.pattern('^[a-z,A-Z,-]+')]]
+      word: ['', [Validators.required, Validators.pattern('^[a-z,A-Z,-,é,è,ù,ê,ç,â,à,î,ï,\']+')]]
     });
 
     // Subscribe to error event
@@ -71,6 +71,7 @@ export class GameComponent implements OnInit {
     // Subscribe to init game event to launch the game
     this.socketService.listen('init-game').subscribe(
       (data) => {
+        this.soundService.playSound('initgame.wav');
         var players = data['players'];
         for (var index in players) {
           this.listPlayers.push({
@@ -109,6 +110,9 @@ export class GameComponent implements OnInit {
             this.listPlayers[index].words = players[index].words;
           }
           this.isMyTurn = data['isYourTurn'];
+          if(this.isMyTurn){
+            this.soundService.playSound('yourturn.wav');
+          }
           var wordClean = this.cleanWord(data['word']);
           this.wordsList.push(wordClean);
         }
@@ -129,6 +133,7 @@ export class GameComponent implements OnInit {
     // Listen to a aplyer vote
     this.socketService.listen('vote').subscribe(
       (data) => {
+        this.soundService.playSound('submit.wav');
         const index = data['index'];
         const players = data['players'];
         for(var i in players){
@@ -150,6 +155,7 @@ export class GameComponent implements OnInit {
     this.socketService.listen('end-game').subscribe(
       () => {
         this.isOver = true;
+        this.soundService.playSound('end.wav');
         if(this.amIUndercover){
           const nbVote = this.listPlayers[this.position].vote;
           if(nbVote == 0){
@@ -232,6 +238,7 @@ export class GameComponent implements OnInit {
       } else {
         this.alreadyVote = true;
       }
+      this.soundService.playSound('submit.wav');
       this.positionVoter = index;
       this.playerVoteSelected = true;
       var classPlayer = this.listPlayers[this.positionVoter].username.replace(/\s/g, '-');

@@ -19,7 +19,7 @@
 
 .title {
     text-align: center;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
 }
 
 .title h2 {
@@ -38,7 +38,7 @@
 }
 
 .players h4 {
-    margin-bottom: 0;
+    margin-bottom: 15px;
 }
 
 .player{
@@ -73,12 +73,25 @@
     font-size: 20px;
 }
 
+.mat-list-base .mat-list-item{
+    height: auto;
+}
+
+.wordProposal{
+    height: 100px;
+}
+
 .wordSender {
     align-self: center;
     text-align: center;
     width: 100%;
     padding-left: 30%;
     padding-right: 30%;
+}
+
+.wordItem{
+    text-align: center;
+    margin-bottom: 15px;
 }
 
 .voteMessage {
