@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { WebSocketService } from '../services/websocket.services';
 import { CookieService } from 'ngx-cookie-service';
 import * as $ from 'jquery';
+import { SoundService } from '../services/sound.services';
 
 @Component({
   selector: 'app-game',
@@ -45,7 +46,7 @@ export class GameComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private socketService: WebSocketService,
-    private cookieService: CookieService) { }
+    private soundService: SoundService) { }
 
   ngOnInit(): void {
     // Get the room id from URL
@@ -74,7 +75,8 @@ export class GameComponent implements OnInit {
         for (var index in players) {
           this.listPlayers.push({
             username: players[index],
-            vote: 0
+            vote: 0,
+            words: []
           });
         }
         this.position = data['position'];
@@ -89,17 +91,23 @@ export class GameComponent implements OnInit {
         this.undercoverPosition = data['undercoverPosition'];
         this.amIUndercover = this.undercoverPosition == this.position;
         this.undercoverUsername = this.listPlayers[this.undercoverPosition].username;
+        this.wordsList.push(this.undercoverWord);
+        this.wordsList.push(this.normalWord);
         this.isReady = true;
       }
     );
+
     // Know the next player and add last player word
     this.socketService.listen('next-player').subscribe(
       (data) => {
-        console.log("ici");
+        this.soundService.playSound('submit.wav');
         var lastPlayer = data['emitterName'];
         if (lastPlayer != undefined) {
           // Update last player word
-          $("." + lastPlayer.replace(/\s/g, '-') + " .wordProposal").append("<mat-list-item>" + data['word'] + "</mat-list-item><br>");
+          var players = data['players'];
+          for(var index in players){
+            this.listPlayers[index].words = players[index].words;
+          }
           this.isMyTurn = data['isYourTurn'];
           var wordClean = this.cleanWord(data['word']);
           this.wordsList.push(wordClean);
@@ -138,6 +146,7 @@ export class GameComponent implements OnInit {
       }
     );
 
+    // End game event, reveal a screen with game infos
     this.socketService.listen('end-game').subscribe(
       () => {
         this.isOver = true;
@@ -179,14 +188,15 @@ export class GameComponent implements OnInit {
 
   // Send your word during the game
   submitWordForm() {
+    this.soundService.playSound('submit.wav');
     var myWord = this.sendWordForm.value['word'].trim();
     if (myWord != '') {
       var wordClean = this.cleanWord(myWord);
       if (this.wordsList.includes(wordClean)) {
         this.errorWord = 'Ce mot a déjà été utilisé !'
       } else {
-        this.socketService.emit('next-player', { gameId: this.gameId, word: myWord, counter: this.counter, username: this.username });
-        $(".myPlayer .wordProposal").append("<mat-list-item>" + myWord + "</mat-list-item><br>");
+        this.listPlayers[this.position].words.push(myWord);
+        this.socketService.emit('next-player', { gameId: this.gameId, word: myWord, players: this.listPlayers, counter: this.counter, username: this.username });
         $("#wordInput").val('');
         this.isMyTurn = false;
         this.wordsList.push(wordClean);

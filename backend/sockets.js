@@ -24,7 +24,7 @@ module.exports.listen = function(server) {
         });
 
         socket.on('next-player', (data) => {
-            socketControllers.nextPlayer(roomId, data['word'], data['counter'], data['username'], io);
+            socketControllers.nextPlayer(roomId, data['word'], data['players'], data['counter'], data['username'], io);
         });
 
         socket.on('message', (data) => {

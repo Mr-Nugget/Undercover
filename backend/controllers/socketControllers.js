@@ -132,7 +132,7 @@ exports.broadcastMessage = (message, gameId, username, socket) => {
 /**
  * Next player event
  */
-exports.nextPlayer = (gameId, word, counter, emitterName, io) => {
+exports.nextPlayer = (gameId, word, players, counter, emitterName, io) => {
     var clients = io.sockets.adapter.rooms[gameId].sockets;
     var position = 0;
     var playersNum = Object.keys(clients).length;
@@ -145,13 +145,13 @@ exports.nextPlayer = (gameId, word, counter, emitterName, io) => {
         var clientSocket = io.sockets.connected[clientId];
         // If it's the emitter
         if (position == positionOfEmitter) {
-            clientSocket.emit('next-player', { counter: counter + 1, nextPosition: positionOfNextPlayer });
+            clientSocket.emit('next-player', { counter: counter + 1, players: players, nextPosition: positionOfNextPlayer });
         }
         // If it's the next player
         else if (position == positionOfNextPlayer) {
-            clientSocket.emit('next-player', { emitterName: emitterName, word: word, isYourTurn: true, counter: counter + 1, nextPosition: positionOfNextPlayer });
+            clientSocket.emit('next-player', { emitterName: emitterName, word: word, players: players, isYourTurn: true, counter: counter + 1, nextPosition: positionOfNextPlayer });
         } else {
-            clientSocket.emit('next-player', { emitterName: emitterName, word: word, isYourTurn: false, counter: counter + 1, nextPosition: positionOfNextPlayer });
+            clientSocket.emit('next-player', { emitterName: emitterName, word: word, players: players, isYourTurn: false, counter: counter + 1, nextPosition: positionOfNextPlayer });
         }
         position++;
         // End of word sending, let's go to the vote !

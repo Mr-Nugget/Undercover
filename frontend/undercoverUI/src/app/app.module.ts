@@ -36,6 +36,7 @@ import { AddWordsComponent } from './add-words/add-words.component';
 import { UserService } from './services/user.services';
 import { AuthGuard } from './services/auth-guard.services';
 import { WordService } from './services/word.services';
+import { SoundService } from './services/sound.services';
 
 
 
@@ -74,7 +75,8 @@ import { WordService } from './services/word.services';
     GameService,
     CookieService,
     UserService,
-    WordService, 
+    WordService,
+    SoundService,
     AuthGuard
   ],
   bootstrap: [AppComponent]

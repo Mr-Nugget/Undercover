@@ -43,9 +43,9 @@
 
 .player{
     display: flex;
+    flex: 1;
     flex-direction: column;
     align-items: center;
-    width: 10vw;
 }
 
 .voteCpt{
@@ -76,6 +76,9 @@
 .wordSender {
     align-self: center;
     text-align: center;
+    width: 100%;
+    padding-left: 30%;
+    padding-right: 30%;
 }
 
 .voteMessage {
@@ -196,5 +199,10 @@ mat-form-field {
     }
     .write {
         height: 12vh;
+    }
+
+    .wordSender{
+        padding-left: 15%;
+        padding-right: 15%;
     }
 }

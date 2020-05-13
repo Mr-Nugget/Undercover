@@ -4,6 +4,7 @@ import { WebSocketService } from '../services/websocket.services';
 import { CookieService } from 'ngx-cookie-service';
 import { FormGroup, FormBuilder, NgForm } from "@angular/forms";
 import { environment } from '../../environments/environment';
+import { SoundService } from '../services/sound.services';
 
 
 
@@ -31,7 +32,8 @@ export class LobbyComponent implements OnInit, OnDestroy {
               private socketService: WebSocketService,
               private cookieService: CookieService,
               private formBuilder: FormBuilder,
-              private router: Router,) { }
+              private router: Router,
+              private soundService: SoundService) { }
 
   ngOnInit() {
     // Get the room id from URL
@@ -83,6 +85,7 @@ export class LobbyComponent implements OnInit, OnDestroy {
       
     this.socketService.listen('new-user').subscribe(
       (data) => {
+        this.soundService.playSound('welcome.mp3');
         this.currentPlayers = data['players'].length;
         this.adminName = data['admin'];
         this.playerNames = data['players'];

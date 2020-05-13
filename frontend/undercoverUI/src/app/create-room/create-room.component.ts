@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, NgForm } from "@angular/forms";
 import { GameService } from '../services/game.services';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
+import { SoundService } from '../services/sound.services';
 
 @Component({
   selector: 'app-create-room',
@@ -17,7 +18,8 @@ export class CreateRoomComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
               private gameService: GameService,
               private router: Router,
-              private cookieService: CookieService) { }
+              private cookieService: CookieService,
+              private soundService : SoundService) { }
 
   ngOnInit(): void {
     this.createGameForm = this.formBuilder.group({
@@ -30,6 +32,7 @@ export class CreateRoomComponent implements OnInit {
     this.isReady = false;
     var players = parseInt(this.createGameForm.value['players'], 10);
     var username = this.createGameForm.value['username'];
+    this.soundService.playSound('woosh.mp3');
 
     // Waiting for the promise to pass object
     this.gameService.createGame(players, username)

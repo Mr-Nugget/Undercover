@@ -24,8 +24,9 @@
                     <h3>{{ player.username }}</h3>
                 </div>
                 <div>
-                    <h4>Words :</h4>
+                    <h4>Mots :</h4>
                     <mat-list class="wordProposal">
+                        <mat-list-item *ngFor="let word of player.words">{{ word }}</mat-list-item>
                     </mat-list>
                 </div>
             </div>
@@ -36,7 +37,7 @@
                     <input id="wordInput" type="text" matInput formControlName="word" placeholder="Envois ton mot..."
                         autocomplete="off" maxlength="36">
                 </mat-form-field>
-                <button type="submit" class="submit" mat-raised-button color="accent" [disabled]="!isMyTurn">
+                <button type="submit" class="submit" mat-raised-button color="accent" [disabled]="!isMyTurn || sendWordForm.invalid">
                     <span class="material-icons">
                         send
                     </span>
@@ -44,7 +45,7 @@
             </form>
             <div class="playerTurn">
                 <span *ngIf="isMyTurn">C'est à ton tour de jouer !</span>
-                <span *ngIf="!isMyTurn">C'est au tour de {{ currentPlayer }} de jouer.</span>
+                <span *ngIf="!isMyTurn">C'est au tour de <strong>{{ currentPlayer }}</strong> de jouer.</span>
             </div>
         </div>
         <div *ngIf="isVoteTime && !closedVote" class="voteMessage">
@@ -53,7 +54,7 @@
                 [disabled]="!playerVoteSelected">Voter !</button>
         </div>
         <div *ngIf="isVoteTime && closedVote" class="voteMessage">
-            <span>Tu as voté pour {{ myUndercover }}</span>
+            <span>Tu as voté pour <strong>{{ myUndercover }}</strong></span>
         </div>
     </div>
     <div *ngIf="isOver" class="gameContent">
